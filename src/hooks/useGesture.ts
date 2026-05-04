@@ -50,14 +50,14 @@ export function useGesture(
       if (mode === 'click') return;
 
       if (direction === 'x' || direction === 'both') {
-        let newX = currentX.current + g.dx;
-        // newX = Math.max(-config.maxX, Math.min(config.maxX, newX));
+        // let newX = currentX.current + g.dx;
+        const newX = Math.max(-config.maxX, Math.min(config.maxX, g.dx));
         translateX.setValue(newX);
       }
 
       if (direction === 'y' || direction === 'both') {
-        let newY = currentY.current + g.dy;
-        // newY = Math.max(-config.maxY, Math.min(config.maxY, newY));
+        // let newY = currentY.current + g.dy;
+        const newY = Math.max(-config.maxY, Math.min(config.maxY, g.dy));
         translateY.setValue(newY);
       }
     },
@@ -65,21 +65,21 @@ export function useGesture(
     // 阻尼感
     onPanResponderRelease: () => {
       // 如果是点击模式，直接退出
-      if (mode === 'click') return;
+      // if (mode === 'click') return;
       // 水平方向
-      Animated.spring(translateX, {
-        toValue: 0,
-        bounciness: config.bounciness,
-        speed: config.speed,
-        useNativeDriver: true,
-      }).start();
+      // Animated.spring(translateX, {
+      //   toValue: 0,
+      //   bounciness: config.bounciness,
+      //   speed: config.speed,
+      //   useNativeDriver: true,
+      // }).start();
       // 垂直方向的
-      Animated.spring(translateY, {
-        toValue: 0,
-        bounciness: config.bounciness,
-        speed: config.speed,
-        useNativeDriver: true,
-      }).start();
+      // Animated.spring(translateY, {
+      //   toValue: 0,
+      //   bounciness: config.bounciness,
+      //   speed: config.speed,
+      //   useNativeDriver: true,
+      // }).start();
     },
   });
 

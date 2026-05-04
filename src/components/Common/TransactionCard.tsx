@@ -1,8 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { CategoryIcon } from '../CategoryIcon';
 import { colors } from '@/constants/theme';
-import {Transaction} from "@/types/index";
-import {formatDate} from "@/utils";
+import { Transaction } from "@/types/index";
+import { formatAmount, formatDate } from "@/utils";
+import { Card } from "@/components/UI";
 
 interface TransactionCardProps {
   transaction: Transaction;
@@ -27,49 +28,33 @@ export function TransactionCard({ transaction, onPress }: TransactionCardProps) 
 
   return (
     <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.8}
-      style={[
-        styles.card,
-        {
-          backgroundColor: 'white',
-          borderRadius: 16,
-          padding: 16,
-          borderWidth: 1,
-          borderColor: 'rgba(0, 0, 0, 0.08)',
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.04,
-          shadowRadius: 8,
-          elevation: 2,
-        },
-        styles.card,
-      ]}
+      onPress={ onPress }
+      activeOpacity={ 0.8 }
     >
-      <View style={styles.content}>
-        <View style={styles.left}>
-          <CategoryIcon name={icon} type={transaction.type} size={40} />
-          <View style={styles.info}>
-            <Text style={styles.category}>{transaction.categoryId}</Text>
-            <Text style={styles.note}>{transaction.remark}</Text>
+      <Card marginBottom={ 5 } marginTop={ 0 } borderRadius={ 16 } backgroundColor={ "rgb(255 255 255)" }>
+        <View style={ styles.content }>
+          <View style={ styles.left }>
+            <CategoryIcon name={ icon } type={ transaction.type } size={ 40 }/>
+            <View style={ styles.info }>
+              <Text style={ styles.category }>{ transaction.categoryId }</Text>
+              <Text style={ styles.note }>{ transaction.remark }</Text>
+            </View>
+          </View>
+          <View style={ styles.right }>
+            <Text
+              style={ [
+                styles.amount,
+                {
+                  color: isIncome ? colors.income : colors.expense,
+                },
+              ] }
+            >
+              { isIncome ? '+' : '-' }{ formatAmount(transaction.amount) }
+            </Text>
+            <Text style={ styles.date }>{ formatDate(transaction.updateTime) }</Text>
           </View>
         </View>
-        <View style={styles.right}>
-          <Text
-            style={[
-              styles.amount,
-              {
-                color: isIncome ? colors.income : colors.expense,
-                fontSize: 18,
-                fontWeight: '500',
-              },
-            ]}
-          >
-            {isIncome ? '+' : '-'}¥{transaction.amount.toLocaleString('zh-CN')}
-          </Text>
-          <Text style={styles.date}>{formatDate(transaction.updateTime)}</Text>
-        </View>
-      </View>
+      </Card>
     </TouchableOpacity>
   );
 }

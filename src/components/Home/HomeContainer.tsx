@@ -1,28 +1,30 @@
 import React from 'react';
-import { BalanceCard, TransactionListCard } from "@/components/Home/index";
+import { BalanceCard } from "@/components/Home/index";
 import { useTransactionStore } from "@/stores";
-import { StyleSheet } from "react-native";
-import { DraggableY } from "@/components/UI";
+import { FlatList, Text, View } from "react-native";
+import { TransactionCard } from "@/components/Common";
+import EmptyState from "@/components/UI/EmptyState";
 
 export default function HomeContainer() {
 
   const transactionStore = useTransactionStore();
 
   return (<>
-      <DraggableY style={ styles.draggableBox }>
-        <BalanceCard
-          income={ transactionStore.getTotalIncome() }
-          expense={ transactionStore.getTotalExpense() }
-        />
-        <TransactionListCard data={ transactionStore.getTransaction() }/>
-      </DraggableY>
+      <FlatList
+        data={ transactionStore.getTransaction() }
+        keyExtractor={(_, index)=>index.toString()}
+        renderItem={ ({ item, index }) => (
+          <TransactionCard transaction={ item }/>
+        ) }
+        ListHeaderComponent={
+          <BalanceCard
+            income={ transactionStore.getTotalIncome() }
+            expense={ transactionStore.getTotalExpense() }/>
+        }
+        ListEmptyComponent={
+          <EmptyState icon={ 'Home' } title={ "暂时没有账单" } description={ "" }/>
+        }
+      />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  draggableBox: {
-    width: "100%",
-    borderRadius: 5,
-  }
-})

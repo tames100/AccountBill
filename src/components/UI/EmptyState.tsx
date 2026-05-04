@@ -1,4 +1,6 @@
 import {Text, View} from "react-native";
+import { Icon } from "@/components/UI/index";
+import { IconName } from "@/types/icon";
 
 /**
  * 空状态
@@ -7,7 +9,7 @@ import {Text, View} from "react-native";
 export default function EmptyState({icon, title, description}: { icon: string; title: string; description: string }) {
   return (
     <View style={ {flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32} }>
-      {/*<Icon name={ icon } size={ 64 } color="#ececf0"/>*/ }
+      <Icon name={ icon as IconName } size={ 64 } color="#ececf0"/>
       <Text style={ {fontSize: 16, fontWeight: '500', color: '#717182', marginTop: 16} }>{ title }</Text>
       <Text style={ {fontSize: 14, color: '#717182', marginTop: 8} }>{ description }</Text>
     </View>
