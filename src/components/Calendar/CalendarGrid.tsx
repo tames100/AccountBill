@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+import {View} from 'react-native';
 
-interface CalendarProps {
+interface CalendarGridProps {
 }
 
 /**
@@ -9,7 +9,7 @@ interface CalendarProps {
  * @param props
  * @constructor
  */
-export default function Calendar(props: CalendarProps) {
+function CalendarGrid(props: CalendarGridProps) {
   const {} = props;
   const title = "123";
 
@@ -17,3 +17,5 @@ export default function Calendar(props: CalendarProps) {
     <View>{ title }</View>
   );
 }
+
+export default CalendarGrid;

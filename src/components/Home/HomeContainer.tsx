@@ -1,20 +1,28 @@
-
 import React from 'react';
-import {View} from 'react-native';
+import { BalanceCard, TransactionListCard } from "@/components/Home/index";
+import { useTransactionStore } from "@/stores";
+import { StyleSheet } from "react-native";
+import { DraggableY } from "@/components/UI";
 
-interface HomeContainerProps {
-}
+export default function HomeContainer() {
 
-/**
- * 组件介绍
- * @param props
- * @constructor
- */
-export default function HomeContainer(props: HomeContainerProps) {
-  const {} = props;
-  const title = "123";
+  const transactionStore = useTransactionStore();
 
-  return (
-    <View>{title}</View>
+  return (<>
+      <DraggableY style={ styles.draggableBox }>
+        <BalanceCard
+          income={ transactionStore.getTotalIncome() }
+          expense={ transactionStore.getTotalExpense() }
+        />
+        <TransactionListCard data={ transactionStore.getTransaction() }/>
+      </DraggableY>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  draggableBox: {
+    width: "100%",
+    borderRadius: 5,
+  }
+})

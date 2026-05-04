@@ -1,6 +1,5 @@
-
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 interface BillChartsProps {
 }
@@ -15,6 +14,6 @@ export default function BillCharts(props: BillChartsProps) {
   const title = "123";
 
   return (
-    <View>{title}</View>
+    <View>{ title }</View>
   );
 }

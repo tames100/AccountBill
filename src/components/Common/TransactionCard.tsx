@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { CategoryIcon } from './CategoryIcon';
+import { CategoryIcon } from '../CategoryIcon';
 import { colors } from '@/constants/theme';
-import {Transaction} from "@/types";
+import {Transaction} from "@/types/index";
 import {formatDate} from "@/utils";
 
 interface TransactionCardProps {

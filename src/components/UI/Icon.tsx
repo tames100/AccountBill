@@ -1,20 +1,21 @@
-
-import React from 'react';
-import {View} from 'react-native';
+import {
+  Ionicons
+} from '@expo/vector-icons';
+import { colors } from "@/constants/theme";
+import { IconName } from "@/types/icon";
 
 interface IconProps {
+  name: IconName;
+  color?: string;
+  size?: number;
 }
 
-/**
- * 组件介绍
- * @param props
- * @constructor
- */
-export default function Icon(props: IconProps) {
-  const {} = props;
-  const title = "123";
+export default function Icon({ name, color, size }: IconProps) {
 
-  return (
-    <View>{title}</View>
-  );
-}
+  return <Ionicons
+    name={name}
+    color={ color ?? colors.primary }
+    size={ size ?? 24 }
+    strokeWidth={ 2 }
+  />;
+};

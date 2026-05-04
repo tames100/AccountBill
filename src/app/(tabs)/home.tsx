@@ -1,20 +1,20 @@
-
 import React from 'react';
-import {View} from 'react-native';
+import { LayoutComponent } from "@/components/Common/LayoutComponent";
+import { AddTransactionModal, TabHeader } from "@/components/Home"
+import HomeContainer from "@/components/Home/HomeContainer";
 
-interface HomeProps {
-}
 
-/**
- * 组件介绍
- * @param props
- * @constructor
- */
-export default function Home(props: HomeProps) {
-  const {} = props;
-  const title = "123";
+export default function Home() {
 
   return (
-    <View>{title}</View>
+    <LayoutComponent>
+      <LayoutComponent.Header>
+        <TabHeader></TabHeader>
+      </LayoutComponent.Header>
+      <LayoutComponent.Content>
+        <HomeContainer/>
+      </LayoutComponent.Content>
+      <AddTransactionModal></AddTransactionModal>
+    </LayoutComponent>
   );
 }
