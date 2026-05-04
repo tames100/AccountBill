@@ -1,9 +1,9 @@
-import TabContain from './TabContain'
+import CalendarTabHeader from './CalendarTabHeader'
 import MonthSelector from './MonthSelector'
 import CalendarGrid from './CalendarGrid'
 
 export {
-  TabContain,
+  CalendarTabHeader,
   CalendarGrid,
   MonthSelector,
 }

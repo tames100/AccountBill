@@ -62,10 +62,10 @@ export const colors = {
 };
 
 export const fontSizes = {
-  small: '12px',
-  normal: '14px',
-  big: '16px',
-  largeBig: '20px',
+  small: 12,
+  normal: 14,
+  big: 16,
+  largeBig: 20,
 }
 
 export const fontWeights = {

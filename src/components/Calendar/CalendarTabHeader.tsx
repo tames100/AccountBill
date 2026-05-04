@@ -3,12 +3,13 @@ import { StyleSheet, Text, View } from "react-native";
 import { useTransactionStore } from "@/stores";
 import { colors } from "@/constants/theme";
 
-function TabContain() {
+export default function CalendarTabHeader() {
 
   const transactionStore = useTransactionStore()
 
   return (
     <View style={ styles.summaryCard }>
+      <Text style={ styles.monthTitle }>2025年5月</Text>
       <View style={ styles.summaryRow }>
         <View style={ styles.summaryItem }>
           <Text style={ styles.summaryLabel }>收</Text>
@@ -22,23 +23,20 @@ function TabContain() {
             { transactionStore.getTotalExpense() }
           </Text>
         </View>
-        <View style={ styles.summaryItem }>
-          <Text style={ styles.summaryLabel }>余</Text>
-          <Text
-            style={ [
-              styles.summaryValue,
-              transactionStore.getBalance() >= 0 ? styles.incomeText : styles.expenseText,
-            ] }
-          >
-            { transactionStore.getBalance() }
-          </Text>
-        </View>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+
+  monthTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 12,
+    color: '#1e293b',
+  },
   summaryCard: {
     backgroundColor: colors.primary,
     paddingVertical: 24,
@@ -67,13 +65,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 16,
     paddingBottom: 8,
-  },
-  monthTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: 12,
-    color: '#1e293b',
   },
   weekRow: {
     flexDirection: 'row',
@@ -225,5 +216,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 })
-
-export default TabContain

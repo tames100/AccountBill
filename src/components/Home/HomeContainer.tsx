@@ -11,6 +11,7 @@ export default function HomeContainer() {
 
   return (<>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={ transactionStore.getTransaction() }
         keyExtractor={(_, index)=>index.toString()}
         renderItem={ ({ item, index }) => (
