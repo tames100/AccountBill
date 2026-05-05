@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from "react";
+import { View } from "react-native";
 
 interface CardProps {
   padding?: number;
@@ -12,7 +12,6 @@ interface CardProps {
   borderColor?: string;
   children: React.ReactNode;
 }
-
 
 /**
  * 卡片容器
@@ -30,32 +29,25 @@ export default function Card(props: CardProps) {
     isBorder,
     borderWidth,
     borderColor,
-    children
+    children,
   } = props;
 
   return (
-    <View style={ [
-      styles.container,
-      {
-        backgroundColor: backgroundColor ?? 'white',
-        padding: padding ?? 16,
-        marginBottom: marginBottom ?? 16,
-        marginTop: marginTop ?? 16,
-        borderRadius: borderRadius ?? 20,
-        borderWidth: isBorder ? borderWidth : 1,
-        borderColor: isBorder ? borderColor : "rgba(0, 0, 0, 0.08)",
-      },
-    ] }
-    >{ children }</View>
+    <View
+      className={`
+        shadow-sm
+        ${backgroundColor ? `bg-[${backgroundColor}]` : "bg-white"}
+        ${padding ? `p-[${padding}px]` : "p-4"}
+        ${marginBottom ? `mb-[${marginBottom}px]` : "mb-4"}
+        ${marginTop ? `mt-[${marginTop}px]` : "mt-4"}
+        ${borderRadius ? `rounded-[${borderRadius}px]` : "rounded-2xl"}
+        ${isBorder ? (borderWidth ? `border-[${borderWidth}px]` : "border") : "border"}
+        ${isBorder && borderColor ? `border-[${borderColor}]` : "border-border"}
+      `}
+    >
+      {children}
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    elevation: 2,
-  }
-})
+// 样式已迁移到nativeWind类名

@@ -1,86 +1,81 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-import { useTransactionStore } from "@/stores";
-import { colors, fontSizes } from "@/constants/theme";
+import { Text, TouchableOpacity, View } from "react-native";
 import { formatAmount } from "@/utils";
 import { Icon } from "@/components/UI";
+import { colors } from "@/constants/theme";
 
-export default function CalendarTabHeader() {
+interface CalendarTabHeaderProps {
+  year: number;
+  month: number;
+  selectedDate: Date;
+  selectedDaySummary: { income: number; expense: number; balance: number };
+  onPrevMonth: () => void;
+  onNextMonth: () => void;
+  onPrevWeek: () => void;
+  onNextWeek: () => void;
+  onToday: () => void;
+  isCollapsed: boolean;
+}
 
-  const transactionStore = useTransactionStore()
+export default function CalendarTabHeader(props: CalendarTabHeaderProps) {
+  const {
+    year,
+    month,
+    selectedDate,
+    selectedDaySummary,
+    onPrevMonth,
+    onNextMonth,
+    onPrevWeek,
+    onNextWeek,
+    onToday,
+    isCollapsed,
+  } = props;
 
   return (
-    <View style={ styles.header }>
+    <View className="flex-row justify-between items-center">
       <View>
-        <Text style={ styles.monthTitle }>2025年5月</Text>
-        <View style={ styles.summaryRow }>
-          <View style={ styles.summaryItem }>
-            <Text style={ styles.summaryLabel }>收</Text>
-            <Text style={ [styles.summaryValue, { color: colors.income }] }>
-              { formatAmount(transactionStore.getTotalIncome()) }
+        <Text className="text-xl font-semibold text-text">
+          { year }年{ month }月
+        </Text>
+        <View className="flex-row justify-around">
+          <View className="flex-row items-center">
+            <Text className="text-xs text-text mr-1">收</Text>
+            <Text className="text-xs text-income mr-2">
+              { formatAmount(selectedDaySummary.income) }
             </Text>
           </View>
-          <View style={ styles.summaryItem }>
-            <Text style={ styles.summaryLabel }>支</Text>
-            <Text style={ [styles.summaryValue, { color: colors.expense }] }>
-              { formatAmount(transactionStore.getTotalExpense()) }
+          <View className="flex-row items-center">
+            <Text className="text-xs text-text mr-1">支</Text>
+            <Text className="text-xs text-expense mr-2">
+              { formatAmount(selectedDaySummary.expense) }
             </Text>
           </View>
-          <View style={ styles.summaryItem }>
-            <Text style={ styles.summaryLabel }>余</Text>
-            <Text style={ [styles.summaryValue] }>
-              { formatAmount(transactionStore.getTotalIncome() - transactionStore.getTotalExpense()) }
+          <View className="flex-row items-center">
+            <Text className="text-xs text-text mr-1">余</Text>
+            <Text
+              className="text-xs mr-2"
+              style={ {
+                color:
+                  selectedDaySummary.balance >= 0
+                    ? colors.income
+                    : colors.expense,
+              } }
+            >
+              { formatAmount(selectedDaySummary.balance) }
             </Text>
           </View>
         </View>
       </View>
-      <View style={ styles.actions }>
-        <Text style={ styles.actionsItem }>今</Text>
-        <View style={ styles.actionsItem }>
-          <Icon name={ "add-circle" } size={ 28 }/>
-        </View>
-        <TouchableOpacity activeOpacity={ 0.9 } style={ styles.actionsItem }>
-          <Icon name={ "ellipsis-vertical" } size={ 28 }/>
+      <View className="flex-row">
+        <TouchableOpacity onPress={ onToday }>
+          <Text className="text-xl px-2">今</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="add-circle" size={ 28 } color={ colors.primary }/>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="ellipsis-vertical" size={ 28 } color={ colors.text }/>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-
-  monthTitle: {
-    fontSize: fontSizes.largeBig,
-    fontWeight: '600',
-    color: colors.text,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  summaryItem: {
-    flexDirection: "row",
-    alignItems: 'center',
-  },
-  summaryLabel: {
-    fontSize: fontSizes.small,
-    color: colors.text,
-    marginRight: 4,
-  },
-  summaryValue: {
-    fontSize: fontSizes.small,
-    marginRight: 8,
-  },
-  actions: {
-    flexDirection: "row",
-  },
-  actionsItem: {
-    fontSize: fontSizes.largeBig,
-    paddingHorizontal: 8,
-  },
-})

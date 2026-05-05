@@ -1,8 +1,7 @@
 import { Card } from "@/components/UI";
-import { colors } from "@/constants/theme";
 import { Transaction } from "@/types/index";
 import { formatAmount, formatDate } from "@/utils";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { CategoryIcon } from "../CategoryIcon";
 
 interface TransactionCardProps {
@@ -33,83 +32,34 @@ export function TransactionCard({
       marginBottom={5}
       marginTop={0}
       borderRadius={16}
-      backgroundColor={"rgb(255 255 255)"}
+      backgroundColor="white"
     >
-      <View style={styles.content}>
-        <View style={styles.left}>
+      <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center flex-1 gap-3">
           <CategoryIcon name={icon} type={transaction.type} size={40} />
-          <View style={styles.info}>
-            <Text style={styles.category}>{transaction.categoryId}</Text>
-            <Text style={styles.note}>{transaction.remark}</Text>
+          <View className="flex-1 gap-1">
+            <Text className="text-base font-medium text-black">
+              {transaction.categoryId}
+            </Text>
+            <Text className="text-sm text-mutedText max-w-[200px]">
+              {transaction.remark}
+            </Text>
           </View>
         </View>
-        <View style={styles.right}>
+        <View className="items-end gap-1">
           <Text
-            style={[
-              styles.amount,
-              {
-                color: isIncome ? colors.income : colors.expense,
-              },
-            ]}
+            className={`text-lg font-medium ${isIncome ? "text-income" : "text-expense"}`}
           >
             {isIncome ? "+" : "-"}
             {formatAmount(transaction.amount)}
           </Text>
-          <Text style={styles.date}>{formatDate(transaction.updateTime)}</Text>
+          <Text className="text-xs text-mutedText">
+            {formatDate(transaction.updateTime)}
+          </Text>
         </View>
       </View>
     </Card>
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "white",
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.08)",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  left: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-    gap: 12,
-  },
-  info: {
-    flex: 1,
-    gap: 4,
-  },
-  category: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: "#000",
-  },
-  note: {
-    fontSize: 13,
-    color: "#717182",
-    maxWidth: 200,
-  },
-  right: {
-    alignItems: "flex-end",
-    gap: 4,
-  },
-  amount: {
-    fontSize: 18,
-    fontWeight: "500",
-  },
-  date: {
-    fontSize: 12,
-    color: "#717182",
-  },
-});
+// 样式已迁移到nativeWind类名

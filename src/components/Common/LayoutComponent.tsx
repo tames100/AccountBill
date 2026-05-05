@@ -1,6 +1,5 @@
-import { colors } from "@/constants/theme";
 import React, { isValidElement, ReactNode } from "react";
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { View, ViewStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // ========== 类型定义 ==========
@@ -26,15 +25,21 @@ interface LayoutComponentProps {
 
 // ========== 子组件定义（作为标识） ==========
 const LayoutHeader: React.FC<LayoutHeaderProps> = ({ children, style }) => (
-  <View style={[styles.slotHeader, style]}>{children}</View>
+  <View className="px-4" style={style}>
+    {children}
+  </View>
 );
 
 const LayoutContent: React.FC<LayoutContentProps> = ({ children, style }) => (
-  <View style={[styles.slotContent, style]}>{children}</View>
+  <View className="flex-1 px-4" style={style}>
+    {children}
+  </View>
 );
 
 const LayoutFooter: React.FC<LayoutFooterProps> = ({ children, style }) => (
-  <View style={[styles.slotFooter, style]}>{children}</View>
+  <View className="px-4 py-3 bg-white border-t border-gray-200" style={style}>
+    {children}
+  </View>
 );
 
 LayoutHeader.displayName = "Index.Header";
@@ -86,19 +91,23 @@ const LayoutComponent: React.FC<LayoutComponentProps> & {
   const mainContent = contentContent || otherChildren;
 
   return (
-    <SafeAreaView style={[styles.container, style]} edges={["top"]}>
-      <View style={{ flex: 1 }}>
+    <SafeAreaView
+      className="flex-1 bg-screenBackground"
+      style={style}
+      edges={["top"]}
+    >
+      <View className="flex-1">
         {/* 可选的 Header 区域 */}
         {headerContent && (
-          <View style={styles.headerWrapper}>{headerContent}</View>
+          <View className="flex-shrink-0">{headerContent}</View>
         )}
 
         {/* 主要内容区域 */}
-        <View style={styles.contentWrapper}>{mainContent}</View>
+        <View className="flex-1">{mainContent}</View>
 
         {/* 可选的 Footer 区域 */}
         {footerContent && (
-          <View style={styles.footerWrapper}>{footerContent}</View>
+          <View className="flex-shrink-0">{footerContent}</View>
         )}
       </View>
     </SafeAreaView>
@@ -110,35 +119,6 @@ LayoutComponent.Header = LayoutHeader;
 LayoutComponent.Content = LayoutContent;
 LayoutComponent.Footer = LayoutFooter;
 
-// ========== 样式 ==========
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.screenBackground,
-  },
-  headerWrapper: {
-    flexShrink: 0,
-  },
-  contentWrapper: {
-    flex: 1,
-  },
-  footerWrapper: {
-    flexShrink: 0,
-  },
-  slotHeader: {
-    paddingHorizontal: 16,
-  },
-  slotContent: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  slotFooter: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderTopColor: "#e5e5e5",
-  },
-});
+// 样式已迁移到nativeWind类名
 
 export { LayoutComponent };
