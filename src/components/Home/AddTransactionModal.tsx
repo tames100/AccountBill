@@ -2,7 +2,7 @@ import { colors } from "@/constants/theme";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-function AddTransactionModal() {
+export default function AddTransactionModal() {
   const router = useRouter();
   const handleAddBill = () => {
     router.push("/(noTabSrceens)/addBill");
@@ -51,5 +51,3 @@ const styles = StyleSheet.create({
     color: colors.primaryText,
   },
 });
-
-export default AddTransactionModal;

@@ -1,7 +1,7 @@
-import React, { isValidElement, ReactNode } from 'react';
-import { View, ViewStyle, StyleSheet } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "@/constants/theme";
+import React, { isValidElement, ReactNode } from "react";
+import { StyleSheet, View, ViewStyle } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // ========== 类型定义 ==========
 interface LayoutHeaderProps {
@@ -26,31 +26,37 @@ interface LayoutComponentProps {
 
 // ========== 子组件定义（作为标识） ==========
 const LayoutHeader: React.FC<LayoutHeaderProps> = ({ children, style }) => (
-  <View style={ [styles.slotHeader, style] }>{ children }</View>
+  <View style={[styles.slotHeader, style]}>{children}</View>
 );
 
 const LayoutContent: React.FC<LayoutContentProps> = ({ children, style }) => (
-  <View style={ [styles.slotContent, style] }>{ children }</View>
+  <View style={[styles.slotContent, style]}>{children}</View>
 );
 
 const LayoutFooter: React.FC<LayoutFooterProps> = ({ children, style }) => (
-  <View style={ [styles.slotFooter, style] }>{ children }</View>
+  <View style={[styles.slotFooter, style]}>{children}</View>
 );
 
-LayoutHeader.displayName = 'Index.Header';
-LayoutContent.displayName = 'Index.Content';
-LayoutFooter.displayName = 'Index.Footer';
+LayoutHeader.displayName = "Index.Header";
+LayoutContent.displayName = "Index.Content";
+LayoutFooter.displayName = "Index.Footer";
 
 // ========== 类型守卫 ==========
-const isHeader = (child: ReactNode): child is React.ReactElement<LayoutHeaderProps> => {
+const isHeader = (
+  child: ReactNode,
+): child is React.ReactElement<LayoutHeaderProps> => {
   return isValidElement(child) && child.type === LayoutHeader;
 };
 
-const isContent = (child: ReactNode): child is React.ReactElement<LayoutContentProps> => {
+const isContent = (
+  child: ReactNode,
+): child is React.ReactElement<LayoutContentProps> => {
   return isValidElement(child) && child.type === LayoutContent;
 };
 
-const isFooter = (child: ReactNode): child is React.ReactElement<LayoutFooterProps> => {
+const isFooter = (
+  child: ReactNode,
+): child is React.ReactElement<LayoutFooterProps> => {
   return isValidElement(child) && child.type === LayoutFooter;
 };
 
@@ -77,32 +83,23 @@ const LayoutComponent: React.FC<LayoutComponentProps> & {
       otherChildren.push(child);
     }
   });
-
-  // 决定主要内容区域显示什么
-  // 优先级：Content > otherChildren
-  const mainContent = contentContent !== null ? contentContent : otherChildren;
+  const mainContent = contentContent || otherChildren;
 
   return (
-    <SafeAreaView style={ [styles.container, style] } edges={ ["top"] }>
-      <View style={ { flex: 1 } }>
-        {/* 可选的 Header 区域 */ }
-        { headerContent && (
-          <View style={ styles.headerWrapper }>
-            { headerContent }
-          </View>
-        ) }
+    <SafeAreaView style={[styles.container, style]} edges={["top"]}>
+      <View style={{ flex: 1 }}>
+        {/* 可选的 Header 区域 */}
+        {headerContent && (
+          <View style={styles.headerWrapper}>{headerContent}</View>
+        )}
 
-        {/* 主要内容区域 */ }
-        <View style={ styles.contentWrapper }>
-          { mainContent }
-        </View>
+        {/* 主要内容区域 */}
+        <View style={styles.contentWrapper}>{mainContent}</View>
 
-        {/* 可选的 Footer 区域 */ }
-        { footerContent && (
-          <View style={ styles.footerWrapper }>
-            { footerContent }
-          </View>
-        ) }
+        {/* 可选的 Footer 区域 */}
+        {footerContent && (
+          <View style={styles.footerWrapper}>{footerContent}</View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -138,9 +135,9 @@ const styles = StyleSheet.create({
   slotFooter: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderTopColor: '#e5e5e5',
+    borderTopColor: "#e5e5e5",
   },
 });
 

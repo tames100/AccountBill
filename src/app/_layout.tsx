@@ -1,13 +1,22 @@
-import { Stack } from "expo-router";
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { settings } from "@/config/setting";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  return (<ThemeProvider value={ settings.theme === 'dark' ? DarkTheme : DefaultTheme }>
-    <Stack>
-      <Stack.Screen name={ "(tabs)" } options={ {
-        headerShown: false,
-      } }/>
-    </Stack>
-  </ThemeProvider>);
+  return (
+    <ThemeProvider value={settings.theme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: "fade",
+        }}
+      >
+        <Stack.Screen name={"(tabs)"} />
+      </Stack>
+    </ThemeProvider>
+  );
 }
