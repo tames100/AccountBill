@@ -17,7 +17,7 @@ function TabHeader() {
     <View style={ styles.header }>
       {/* 账本选择 */ }
       <View style={ styles.headerLeft }>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.9}>
           <View style={ styles.bill }>
             <Icon name={"wallet"} />
             <Text style={ { fontSize: 18, fontWeight: 500, color: colors.ring } }>生活日常</Text>
@@ -25,14 +25,14 @@ function TabHeader() {
         </TouchableOpacity>
       </View>
       <View style={ styles.action }>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.9}>
           <View style={ styles.icon }>
             <Icon name={"search"} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.9}>
           <View style={ styles.icon }>
-            <Icon name={"settings"} />
+            <Icon name={"ellipsis-vertical"} />
           </View>
         </TouchableOpacity>
       </View>

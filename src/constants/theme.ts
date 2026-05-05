@@ -68,11 +68,6 @@ export const fontSizes = {
   largeBig: 20,
 }
 
-export const fontWeights = {
-  normal: 'normal',
-  bold: 'bold',
-}
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,6 +1,13 @@
 import Icon from './Icon';
 import Card from './Card';
-import { Draggable, DraggableY, DraggableX, TouchableView } from './DraggableView';
+// import { Draggable, DraggableY, DraggableX, TouchableView } from './DraggableView';
 
 
-export { Icon, Card, TouchableView, DraggableY, Draggable, DraggableX };
+export {
+  Icon,
+  Card,
+  // TouchableView,
+  // DraggableY,
+  // Draggable,
+  // DraggableX
+};

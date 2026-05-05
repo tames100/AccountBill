@@ -1,13 +1,22 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "@/constants/theme";
+import { useRouter } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-function  AddTransactionModal()
-{
+function AddTransactionModal() {
+  const router = useRouter();
+  const handleAddBill = () => {
+    router.push("/(noTabSrceens)/addBill");
+  };
+
   return (
-    <View style={ styles.modalOverlay }>
+    <View style={styles.modalOverlay}>
       <View>
-        <TouchableOpacity style={ styles.modalClose } activeOpacity={0.8}>
-          <Text style={ styles.modalCloseText }>+</Text>
+        <TouchableOpacity
+          style={styles.modalClose}
+          activeOpacity={0.8}
+          onPress={handleAddBill}
+        >
+          <Text style={styles.modalCloseText}>+</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -21,7 +30,7 @@ const styles = StyleSheet.create({
     right: 40,
     display: "flex",
     width: 64,
-    height:64,
+    height: 64,
     zIndex: 100,
   },
   modal: {
@@ -41,6 +50,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: colors.primaryText,
   },
-})
+});
 
 export default AddTransactionModal;

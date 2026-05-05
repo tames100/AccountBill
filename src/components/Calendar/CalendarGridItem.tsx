@@ -1,20 +1,14 @@
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import { Transaction } from "@/types/transaction";
+import {  StyleSheet, Text, View } from 'react-native';
+import { DayData } from "@/types";
 import { CalendarCellWidth } from "@/constants/calendar";
-
-interface DayData {
-  date: number;
-  transactions: Transaction[];
-  lunarMonth?: string;   // 农历月
-  lunarDay?: string;     // 农历日
-  festival?: string;     // 公历节日或节气
-  isToday?: boolean;
-}
+import { fontSizes, colors } from "@/constants/theme";
 
 interface CalendarGridItemProps {
   day: DayData | null;
   index: number;
+  income: number;
+  expenses: number;
 }
 
 /**
@@ -23,7 +17,7 @@ interface CalendarGridItemProps {
  * @constructor
  */
 export default function CalendarGridItem(props: CalendarGridItemProps) {
-  const { day, index } = props;
+  const { day, index, income, expenses } = props;
 
   // 渲染每个日期格子
   if (!day) return (
@@ -31,7 +25,7 @@ export default function CalendarGridItem(props: CalendarGridItemProps) {
   );
 
   return (
-    <View key={ index } style={ [styles.dayCell, day.isToday && styles.todayCell] }>
+    <View style={ [styles.dayCell, day.isToday && styles.todayCell] }>
       <Text style={ [styles.dayNumber, day.isToday && styles.todayText] }>{ day.date }</Text>
       <Text style={ styles.lunarText } numberOfLines={ 1 }>
         { day.lunarDay || '' }
@@ -57,33 +51,30 @@ export default function CalendarGridItem(props: CalendarGridItemProps) {
 
 const styles = StyleSheet.create({
     dayCell: {
+      width: CalendarCellWidth - 10,
       aspectRatio: 1 / 0.9,
       paddingVertical: 6,
       alignItems: 'center',
-      backgroundColor: '#fafafa',
       borderRadius: 12,
-      margin: 2,
     },
     emptyCell: {
       backgroundColor: 'transparent',
     },
     todayCell: {
-      backgroundColor: '#eef2ff',
-      borderWidth: 1,
-      borderColor: '#667eea',
+      backgroundColor: colors.primary,
     },
     dayNumber: {
-      fontSize: 16,
-      fontWeight: '500',
+      fontSize: fontSizes.big,
+      fontWeight: 500,
       color: '#333',
     },
     todayText: {
-      color: '#667eea',
+      color: colors.primaryText,
       fontWeight: 'bold',
     },
     lunarText: {
       fontSize: 10,
-      color: '#999',
+      color: colors.mutedText,
       marginTop: 2,
       textAlign: 'center',
     },
@@ -96,10 +87,10 @@ const styles = StyleSheet.create({
       fontWeight: '500',
     },
     incomeText: {
-      color: '#10b981',
+      color: colors.income,
     },
     expenseText: {
-      color: '#ef4444',
+      color: colors.expense,
     },
     todayCard: {
       margin: 16,

@@ -3,6 +3,7 @@ import { Category } from "./category";
 import { Transaction, TransactionType } from "./transaction";
 import { Setting } from "./setting";
 import {  BottomTabItem } from "./BottomNav";
+import {  DayData } from "./calendar";
 
 
 
@@ -13,5 +14,6 @@ export {
   TransactionType,
   Setting,
   BottomTabItem,
+  DayData,
 
 }
