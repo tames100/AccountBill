@@ -1,4 +1,4 @@
-export type TransactionType = "income" | "expense" | "transfer";
+export type TransactionType = "income" | "expense" | "transfer" | "br";
 
 /**
  * 账单类型

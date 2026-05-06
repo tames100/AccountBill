@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { formatAmount } from "@/utils";
 import { Icon } from "@/components/UI";
-import { colors } from "@/constants/theme";
+import { tw } from "@/constants/theme"
 
 interface CalendarTabHeaderProps {
   year: number;
@@ -20,14 +20,14 @@ export default function CalendarTabHeader(props: CalendarTabHeaderProps) {
   const {
     year,
     month,
-    selectedDate,
+    // selectedDate,
     selectedDaySummary,
-    onPrevMonth,
-    onNextMonth,
-    onPrevWeek,
-    onNextWeek,
+    // onPrevMonth,
+    // onNextMonth,
+    // onPrevWeek,
+    // onNextWeek,
     onToday,
-    isCollapsed,
+    // isCollapsed,
   } = props;
 
   return (
@@ -56,8 +56,8 @@ export default function CalendarTabHeader(props: CalendarTabHeaderProps) {
               style={ {
                 color:
                   selectedDaySummary.balance >= 0
-                    ? colors.income
-                    : colors.expense,
+                    ? tw.colors.income
+                    : tw.colors.expense,
               } }
             >
               { formatAmount(selectedDaySummary.balance) }
@@ -70,10 +70,10 @@ export default function CalendarTabHeader(props: CalendarTabHeaderProps) {
           <Text className="text-xl px-2">今</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name="add-circle" size={ 28 } color={ colors.primary }/>
+          <Icon name="add-circle" size={ 28 } color={ tw.colors.primary }/>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name="ellipsis-vertical" size={ 28 } color={ colors.text }/>
+          <Icon name="ellipsis-vertical" size={ 28 } color={ tw.colors.text }/>
         </TouchableOpacity>
       </View>
     </View>

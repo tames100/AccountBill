@@ -1,5 +1,5 @@
-import { colors } from "@/constants/theme";
-import { Platform, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { tw } from "@/constants/theme";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IconName } from "@/types/icon";
 import { Icon } from "@/components/UI";
@@ -45,268 +45,99 @@ export default function Personal() {
   ];
 
   return (
-    <SafeAreaView style={ styles.container } edges={ ["top"] }>
-      <View style={ styles.header }>
-        <Text style={ styles.title }>我的</Text>
+    <SafeAreaView className="flex-1 bg-screenBackground" edges={["top"]}>
+      <View
+        className="px-5 pb-6"
+        style={{ paddingTop: Platform.OS === "ios" ? 64 : 20 }}
+      >
+        <Text className="text-3xl font-medium text-text mb-6">我的</Text>
       </View>
 
-      <View style={ styles.content }>
-        <View style={ [styles.profileCard, { backgroundColor: colors.primary }] }>
-          <View style={ styles.profileHeader }>
-            <View style={ styles.avatar }>
+      <View className="flex-1 px-5 pb-25">
+        <View className="rounded-3xl p-6 mb-6 bg-primary">
+          <View className="flex-row items-center gap-4 mb-4">
+            <View className="w-16 h-16 rounded-full bg-white/20 items-center justify-center">
               <Icon name={"person"} size={32} color={"#ffffff"} />
             </View>
-            <View style={ styles.profileInfo }>
-              <Text style={ styles.profileName }>记账用户</Text>
-              <Text style={ styles.profileMeta }>已记账 156 天</Text>
+            <View className="flex-1 gap-1">
+              <Text className="text-xl font-medium text-white">记账用户</Text>
+              <Text className="text-sm text-white/70">已记账 156 天</Text>
             </View>
           </View>
-          <View style={ styles.profileStats }>
-            <View style={ styles.statItem }>
-              <Text
-                style={ [
-                  styles.statLabel,
-                  { color: "rgba(255, 255, 255, 0.7)" },
-                ] }
-              >
+          <View className="flex-row gap-4 pt-4 border-t border-white/20">
+            <View className="flex-1 items-center">
+              <Text className="text-xs font-normal text-white/70 mb-1">
                 总交易
               </Text>
-              <Text style={ styles.statValue }>342</Text>
+              <Text className="text-lg font-medium text-white">342</Text>
             </View>
-            <View style={ styles.statItem }>
-              <Text
-                style={ [
-                  styles.statLabel,
-                  { color: "rgba(255, 255, 255, 0.7)" },
-                ] }
-              >
+            <View className="flex-1 items-center">
+              <Text className="text-xs font-normal text-white/70 mb-1">
                 总收入
               </Text>
-              <Text style={ styles.statValue }>¥28.5k</Text>
+              <Text className="text-lg font-medium text-white">¥28.5k</Text>
             </View>
-            <View style={ styles.statItem }>
-              <Text
-                style={ [
-                  styles.statLabel,
-                  { color: "rgba(255, 255, 255, 0.7)" },
-                ] }
-              >
+            <View className="flex-1 items-center">
+              <Text className="text-xs font-normal text-white/70 mb-1">
                 总支出
               </Text>
-              <Text style={ styles.statValue }>¥12.3k</Text>
+              <Text className="text-lg font-medium text-white">¥12.3k</Text>
             </View>
           </View>
         </View>
 
-        { menuItems.map((section, sectionIndex) => (
-          <View key={ sectionIndex } style={ styles.menuSection }>
-            <Text style={ styles.menuSectionTitle }>{ section.section }</Text>
-            <View style={ styles.menuCard }>
-              { section.items.map((item, itemIndex) => {
+        {menuItems.map((section, sectionIndex) => (
+          <View key={sectionIndex} className="mb-6">
+            <Text className="text-sm font-medium text-mutedText mb-3 px-1">
+              {section.section}
+            </Text>
+            <View className="bg-white rounded-2xl border border-border overflow-hidden">
+              {section.items.map((item, itemIndex) => {
                 const isLast = itemIndex === section.items.length - 1;
                 return (
                   <TouchableOpacity
-                    key={ itemIndex }
-                    style={ [
-                      styles.menuItem,
-                      {
-                        borderBottomWidth: isLast ? 0 : 1,
-                        borderBottomColor: "rgba(0, 0, 0, 0.08)",
-                      },
-                    ] }
+                    key={itemIndex}
+                    className={`flex-row items-center justify-between px-5 py-4 ${!isLast ? "border-b border-border" : ""}`}
                   >
-                    <View style={ styles.menuItemLeft }>
-                      <View style={ styles.menuItemIcon }>
-                        <Icon name={item.icon}  size={ 20 } color={ colors.mutedText }/>
+                    <View className="flex-row items-center gap-3">
+                      <View className="w-9 h-9 rounded-full bg-muted items-center justify-center">
+                        <Icon
+                          name={item.icon}
+                          size={20}
+                          color={tw.colors.mutedText}
+                        />
                       </View>
-                      <Text style={ styles.menuItemLabel }>{ item.label }</Text>
+                      <Text className="text-base font-medium text-text">
+                        {item.label}
+                      </Text>
                     </View>
-                    <View style={ styles.menuItemRight }>
-                      { item.badge && (
-                        <View style={ styles.badge }>
-                          <Text style={ styles.badgeText }>{ item.badge }</Text>
+                    <View className="flex-row items-center gap-2">
+                      {item.badge && (
+                        <View className="bg-expense rounded-full px-2 py-0.5">
+                          <Text className="text-xs font-medium text-white">
+                            {item.badge}
+                          </Text>
                         </View>
-                      ) }
-                      { item.toggle ? (
-                        <View style={ styles.toggle }>
-                          <View style={ styles.toggleKnob }/>
+                      )}
+                      {item.toggle ? (
+                        <View className="w-11 h-6 bg-muted rounded-full relative">
+                          <View className="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5" />
                         </View>
                       ) : (
-                        <Text style={ styles.chevron }>›</Text>
-                      ) }
+                        <Text className="text-lg text-mutedText">›</Text>
+                      )}
                     </View>
                   </TouchableOpacity>
                 );
-              }) }
+              })}
             </View>
           </View>
-        )) }
+        ))}
 
-        <Text style={ styles.version }>记账本 v1.0.0</Text>
+        <Text className="text-sm text-mutedText text-center mt-8">
+          记账本 v1.0.0
+        </Text>
       </View>
-
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.screenBackground,
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingTop: Platform.OS === "ios" ? 60 : 20,
-    paddingBottom: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "500",
-    color: colors.text,
-    marginBottom: 24,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 100,
-  },
-  profileCard: {
-    borderRadius: 24,
-    padding: 24,
-    marginBottom: 24,
-  },
-  profileHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    marginBottom: 16,
-  },
-  avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  profileInfo: {
-    flex: 1,
-    gap: 4,
-  },
-  profileName: {
-    fontSize: 20,
-    fontWeight: "500",
-    color: "#ffffff",
-    marginBottom: 2,
-  },
-  profileMeta: {
-    fontSize: 14,
-    color: "rgba(255, 255, 255, 0.7)",
-  },
-  profileStats: {
-    flexDirection: "row",
-    gap: 16,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
-  },
-  statItem: {
-    flex: 1,
-    alignItems: "center",
-  },
-  statLabel: {
-    fontSize: 12,
-    fontWeight: "400",
-    marginBottom: 4,
-  },
-  statValue: {
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#ffffff",
-  },
-  menuSection: {
-    marginBottom: 24,
-  },
-  menuSectionTitle: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: colors.mutedText,
-    marginBottom: 12,
-    paddingHorizontal: 4,
-  },
-  menuCard: {
-    // backgroundColor: colors.card,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.08)",
-    overflow: "hidden",
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    // backgroundColor: colors.card,
-  },
-  menuItemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  menuItemIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.muted,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  menuItemLabel: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: colors.text,
-  },
-  menuItemRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
-    backgroundColor: colors.expense,
-  },
-  badgeText: {
-    fontSize: 12,
-    fontWeight: "500",
-    color: "#ffffff",
-  },
-  toggle: {
-    width: 44,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: colors.muted,
-    position: "relative",
-  },
-  toggleKnob: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#ffffff",
-    position: "absolute",
-    left: 2,
-    top: 2,
-  },
-  chevron: {
-    fontSize: 18,
-    color: colors.mutedText,
-  },
-  version: {
-    textAlign: "center",
-    fontSize: 14,
-    color: colors.mutedText,
-    marginTop: 32,
-  },
-});

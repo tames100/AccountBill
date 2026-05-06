@@ -3,6 +3,7 @@ import { Icon, Card } from "@/components/UI";
 import { formatAmount } from "@/utils";
 import { printLog } from "@/utils/printLog";
 import { IconName } from "@/types/icon";
+import { tw } from "@/constants/theme";
 
 interface BalanceCardProps {
   income: number;
@@ -27,19 +28,19 @@ export default function BalanceCard({ income, expense }: BalanceCardProps) {
     {
       label: "本月收入",
       icon: "arrow-up",
-      amountTextColor: colors.incomeDark,
+      amountTextColor: tw.colors.incomeDark,
       amountValue: formatAmount(income ?? 0),
     },
     {
       label: "本月支出",
       icon: "arrow-down",
-      amountTextColor: colors.expenseDark,
+      amountTextColor: tw.colors.expenseDark,
       amountValue: formatAmount(expense ?? 0),
     },
     {
       label: "本月结余",
       icon: "filter",
-      amountTextColor: colors.balanceDark,
+      amountTextColor: tw.colors.balanceDark,
       amountValue: formatAmount(income - expense),
     },
   ];
@@ -72,9 +73,7 @@ export default function BalanceCard({ income, expense }: BalanceCardProps) {
       <View className="flex-col gap-1.5 justify-start">
         <View className="flex-row">
           <Icon name={"arrow-up-circle"} size={16} color={textColor} />
-          <Text className="text-xs font-normal" style={{ color: textColor }}>
-            今年结余
-          </Text>
+          <Text className="text-xs font-normal text-white">今年结余</Text>
         </View>
         <View>
           <Text className="text-2xl font-medium leading-9 text-text">

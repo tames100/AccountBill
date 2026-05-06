@@ -1,6 +1,6 @@
 import { LayoutComponent } from "@/components/Common";
 import { Icon } from "@/components/UI";
-import { colors } from "@/constants/theme";
+import { tw } from "@/constants/theme";
 import { useTransactionStore } from "@/stores";
 import { TransactionType } from "@/types/transaction";
 import { useRouter } from "expo-router";
@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import {
   Dimensions,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -197,22 +196,26 @@ export default function AddBill() {
   return (
     <LayoutComponent>
       <LayoutComponent.Header>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handleCancel} style={styles.headerLeft}>
-            <Icon name={"chevron-back-outline"} size={24} color={colors.text} />
+        <View
+          className="flex-row items-center justify-between pl-12 pr-12 border-b bg-screenBackground"
+          style={{ borderBottomColor: "rgba(0, 0, 0, 0.08)" }}
+        >
+          <TouchableOpacity onPress={handleCancel} className={"p-4"}>
+            <Icon
+              name={"chevron-back-outline"}
+              size={24}
+              color={tw.colors.text}
+            />
           </TouchableOpacity>
-          <View style={styles.typeTabs}>
+          <View className={"flex-row gap-16"}>
             {["expense", "income", "transfer", "debt"].map((t) => (
               <TouchableOpacity
                 key={t}
                 onPress={() => setType(t as TransactionType)}
-                style={styles.typeTab}
+                className={"pt-4 pb-4"}
               >
                 <Text
-                  style={[
-                    styles.typeTabText,
-                    type === t && styles.typeTabTextActive,
-                  ]}
+                  className={`font-normal text-mutedText text-base ${type === t && "text-text text-xl"}`}
                 >
                   {t === "expense"
                     ? "支出"
@@ -225,20 +228,20 @@ export default function AddBill() {
               </TouchableOpacity>
             ))}
           </View>
-          <View style={styles.headerRight}>
-            <Text style={styles.billName}>生活日常</Text>
+          <View className={"p-4"}>
+            <Text className={"text-sm text-mutedText"}>生活日常</Text>
           </View>
         </View>
       </LayoutComponent.Header>
       <LayoutComponent.Content>
-        <View style={styles.content}>
+        <View className={tw.container}>
           {/* 主分类 */}
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            style={styles.mainCategoryScroll}
+            className={"border-b border-b-border"}
           >
-            <View style={styles.mainCategoryContainer}>
+            <View className={"flex-row pt-8 pb-8 pr-12 pl-12 gap-16"}>
               {mainCategories.map((cat) => (
                 <TouchableOpacity
                   key={cat.id}
@@ -246,33 +249,31 @@ export default function AddBill() {
                     setSelectedMainCategory(cat.id);
                     setSelectedSubCategory("");
                   }}
-                  style={[
-                    styles.mainCategoryItem,
-                    selectedMainCategory === cat.id &&
-                      styles.mainCategoryItemActive,
-                  ]}
+                  className={`items-center gap-6 pr-8 pl-8 ${selectedMainCategory === cat.id && ""}`}
                 >
                   <View
-                    style={[
-                      styles.mainCategoryIcon,
-                      selectedMainCategory === cat.id &&
-                        styles.mainCategoryIconActive,
-                    ]}
+                    className={`rounded-3xl flex-center ${
+                      selectedMainCategory === cat.id
+                        ? "bg-primary"
+                        : "bg-secondary"
+                    }`}
+                    style={{ width: 48, height: 48 }}
                   >
                     <Icon
                       name={cat.icon as any}
                       size={24}
                       color={
-                        selectedMainCategory === cat.id ? "#fff" : colors.text
+                        selectedMainCategory === cat.id
+                          ? "#fff"
+                          : tw.colors.text
                       }
                     />
                   </View>
                   <Text
-                    style={[
-                      styles.mainCategoryText,
+                    className={`text-xs text-text ${
                       selectedMainCategory === cat.id &&
-                        styles.mainCategoryTextActive,
-                    ]}
+                      "text-primary font-semibold"
+                    }`}
                   >
                     {cat.name}
                   </Text>
@@ -282,35 +283,35 @@ export default function AddBill() {
           </ScrollView>
 
           {/* 子分类网格 */}
-          <ScrollView style={styles.subCategoryScroll}>
-            <View style={styles.subCategoryGrid}>
+          <ScrollView className={"flex-1"}>
+            <View className={"flex-row flex-wrap px-8 py-12 gap-8"}>
               {currentSubCategories.map((cat) => (
                 <TouchableOpacity
                   key={cat.id}
                   onPress={() => setSelectedSubCategory(cat.id)}
-                  style={[
-                    styles.subCategoryItem,
-                    selectedSubCategory === cat.id &&
-                      styles.subCategoryItemActive,
-                  ]}
+                  className={`items-center py-8 rounded-lg ${selectedSubCategory === cat.id && "bg-primary"}`}
+                  style={{ width: (width - 48) / 5 }}
                 >
-                  <View style={styles.subCategoryIcon}>
+                  <View
+                    className={
+                      "w-9 h-9 rounded-full flex-center bg-secondary mb-1"
+                    }
+                  >
                     <Icon
                       name={cat.icon as any}
                       size={20}
                       color={
                         selectedSubCategory === cat.id
-                          ? colors.primary
-                          : colors.text
+                          ? tw.colors.primary
+                          : tw.colors.text
                       }
                     />
                   </View>
                   <Text
-                    style={[
-                      styles.subCategoryText,
+                    className={`text-xs text-text ${
                       selectedSubCategory === cat.id &&
-                        styles.subCategoryTextActive,
-                    ]}
+                      "text-primary font-semibold"
+                    }`}
                   >
                     {cat.name}
                   </Text>
@@ -320,175 +321,201 @@ export default function AddBill() {
           </ScrollView>
 
           {/* 底部操作栏 */}
-          <View style={styles.bottomBar}>
-            <View style={styles.bottomLeft}>
-              <TouchableOpacity style={styles.bottomAction}>
-                <Icon name={"pricetag-outline"} size={18} color={colors.text} />
-                <Text style={styles.bottomActionText}>标签</Text>
+          <View className={"flex-row items-center justify-between"}>
+            <View className={"flex-row items-center gap-4"}>
+              <TouchableOpacity className={"items-center gap-2"}>
+                <Icon
+                  name={"pricetag-outline"}
+                  size={18}
+                  color={tw.colors.text}
+                />
+                <Text className={"text-xs text-text"}>标签</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.bottomAction}
+                className={"items-center gap-2"}
                 onPress={() => setShowRemarkInput(!showRemarkInput)}
               >
-                <Icon name={"create-outline"} size={18} color={colors.text} />
-                <Text style={styles.bottomActionText}>添加备注</Text>
+                <Icon
+                  name={"create-outline"}
+                  size={18}
+                  color={tw.colors.text}
+                />
+                <Text className={"text-xs text-text"}>添加备注</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.amountDisplay}>{amount}</Text>
+            <Text className={"text-2xl font-medium leading-9"}>{amount}</Text>
           </View>
 
           {/* 备注输入 */}
           {showRemarkInput && (
-            <View style={styles.remarkInput}>
-              <Text style={styles.remarkLabel}>备注</Text>
-              <Text style={styles.remarkValue}>{remark || "点击输入备注"}</Text>
+            <View className={"flex-col gap-1.5"}>
+              <Text className={"text-xs text-text"}>备注</Text>
+              <Text className={"text-xs text-text"}>
+                {remark || "点击输入备注"}
+              </Text>
             </View>
           )}
 
           {/* 工具栏 */}
-          <View style={styles.toolbar}>
-            <TouchableOpacity style={styles.toolbarItem}>
-              <Icon name={"calendar-outline"} size={16} color={colors.text} />
-              <Text style={styles.toolbarText}>今天</Text>
+          <View className={"flex-row gap-4"}>
+            <TouchableOpacity className={"items-center gap-2"}>
+              <Icon
+                name={"calendar-outline"}
+                size={16}
+                color={tw.colors.text}
+              />
+              <Text className={"text-xs text-text"}>今天</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.toolbarItem}>
-              <Icon name={"diamond-outline"} size={16} color={colors.primary} />
-              <Text style={styles.toolbarText}>零钱通</Text>
+            <TouchableOpacity className={"items-center gap-2"}>
+              <Icon
+                name={"diamond-outline"}
+                size={16}
+                color={tw.colors.primary}
+              />
+              <Text className={"text-xs text-text"}>零钱通</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.toolbarItem}>
-              <Icon name={"receipt-outline"} size={16} color={colors.text} />
-              <Text style={styles.toolbarText}>不报销</Text>
+            <TouchableOpacity className={"items-center gap-2"}>
+              <Icon name={"receipt-outline"} size={16} color={tw.colors.text} />
+              <Text className={"text-xs text-text"}>不报销</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.toolbarItem}>
-              <Icon name={"attach-outline"} size={16} color={colors.text} />
-              <Text style={styles.toolbarText}>附件</Text>
+            <TouchableOpacity className={"items-center gap-2"}>
+              <Icon name={"attach-outline"} size={16} color={tw.colors.text} />
+              <Text className={"text-xs text-text"}>附件</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.toolbarItem}>
-              <Icon name={"pricetag-outline"} size={16} color={colors.text} />
-              <Text style={styles.toolbarText}>优惠</Text>
+            <TouchableOpacity className="flex-1 h-14 bg-white border border-border items-center justify-center">
+              <Icon
+                name={"pricetag-outline"}
+                size={16}
+                color={tw.colors.text}
+              />
+              <Text className="text-xs text-text">优惠</Text>
             </TouchableOpacity>
           </View>
 
           {/* 数字键盘 */}
-          <View style={styles.keyboard}>
+          <View className={"flex-row flex-wrap gap-2"}>
             {/* 第一行 */}
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("7")}
             >
-              <Text style={styles.keyText}>7</Text>
+              <Text className="text-xl font-medium text-text">7</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("8")}
             >
-              <Text style={styles.keyText}>8</Text>
+              <Text className="text-xl font-medium text-text">8</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("9")}
             >
-              <Text style={styles.keyText}>9</Text>
+              <Text className="text-xl font-medium text-text">9</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.key, styles.keyGray]}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={handleBackspace}
             >
-              <Icon name={"backspace-outline"} size={24} color={colors.text} />
+              <Icon
+                name={"backspace-outline"}
+                size={24}
+                color={tw.colors.text}
+              />
             </TouchableOpacity>
 
             {/* 第二行 */}
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("4")}
             >
-              <Text style={styles.keyText}>4</Text>
+              <Text className="text-xl font-medium text-text">4</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("5")}
             >
-              <Text style={styles.keyText}>5</Text>
+              <Text className="text-xl font-medium text-text">5</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("6")}
             >
-              <Text style={styles.keyText}>6</Text>
+              <Text className="text-xl font-medium text-text">6</Text>
             </TouchableOpacity>
-            <View style={styles.keyColumn}>
+            <View className="flex-1 flex-col">
               <TouchableOpacity
-                style={[styles.keySmall, styles.keyGray]}
+                className="flex-1 bg-muted border border-border items-center justify-center"
                 onPress={() => handleNumberPress("+")}
               >
-                <Text style={styles.keyTextSmall}>+</Text>
+                <Text className="text-base font-medium text-text">+</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.keySmall, styles.keyGray]}
+                className="flex-1 bg-muted border border-border items-center justify-center"
                 onPress={() => handleNumberPress("-")}
               >
-                <Text style={styles.keyTextSmall}>-</Text>
+                <Text className="text-base font-medium text-text">-</Text>
               </TouchableOpacity>
             </View>
 
             {/* 第三行 */}
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("1")}
             >
-              <Text style={styles.keyText}>1</Text>
+              <Text className="text-xl font-medium text-text">1</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("2")}
             >
-              <Text style={styles.keyText}>2</Text>
+              <Text className="text-xl font-medium text-text">2</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("3")}
             >
-              <Text style={styles.keyText}>3</Text>
+              <Text className="text-xl font-medium text-text">3</Text>
             </TouchableOpacity>
-            <View style={styles.keyColumn}>
+            <View className="flex-1 flex-col">
               <TouchableOpacity
-                style={[styles.keySmall, styles.keyGray]}
+                className="flex-1 bg-muted border border-border items-center justify-center"
                 onPress={() => handleNumberPress("×")}
               >
-                <Text style={styles.keyTextSmall}>×</Text>
+                <Text className="text-base font-medium text-text">×</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.keySmall, styles.keyGray]}
+                className="flex-1 bg-muted border border-border items-center justify-center"
                 onPress={() => handleNumberPress("÷")}
               >
-                <Text style={styles.keyTextSmall}>÷</Text>
+                <Text className="text-base font-medium text-text">÷</Text>
               </TouchableOpacity>
             </View>
 
             {/* 第四行 */}
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("C")}
             >
-              <Text style={styles.keyText}>再记</Text>
+              <Text className="text-xl font-medium text-text">再记</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress("0")}
             >
-              <Text style={styles.keyText}>0</Text>
+              <Text className="text-xl font-medium text-text">0</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.key}
+              className="flex-1 h-14 bg-white border border-border items-center justify-center"
               onPress={() => handleNumberPress(".")}
             >
-              <Text style={styles.keyText}>.</Text>
+              <Text className="text-xl font-medium text-text">.</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.key, styles.keyGray]}
+              className="flex-1 h-14 bg-muted border border-border items-center justify-center"
               onPress={handleCancel}
             >
-              <Text style={styles.keyText}>取消</Text>
+              <Text className="text-xl font-medium text-text">取消</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -496,224 +523,3 @@ export default function AddBill() {
     </LayoutComponent>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    backgroundColor: colors.screenBackground,
-  },
-  headerLeft: {
-    padding: 4,
-  },
-  typeTabs: {
-    flexDirection: "row",
-    gap: 16,
-  },
-  typeTab: {
-    paddingVertical: 4,
-  },
-  typeTabText: {
-    fontSize: 16,
-    color: colors.mutedText,
-    fontWeight: "400",
-  },
-  typeTabTextActive: {
-    color: colors.text,
-    fontWeight: "600",
-  },
-  headerRight: {
-    padding: 4,
-  },
-  billName: {
-    fontSize: 14,
-    color: colors.mutedText,
-  },
-  content: {
-    flex: 1,
-    backgroundColor: colors.screenBackground,
-  },
-  mainCategoryScroll: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  mainCategoryContainer: {
-    flexDirection: "row",
-    paddingHorizontal: 8,
-    paddingVertical: 12,
-    gap: 16,
-  },
-  mainCategoryItem: {
-    alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 8,
-  },
-  mainCategoryItemActive: {},
-  mainCategoryIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: colors.secondary,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  mainCategoryIconActive: {
-    backgroundColor: colors.primary,
-  },
-  mainCategoryText: {
-    fontSize: 12,
-    color: colors.text,
-  },
-  mainCategoryTextActive: {
-    color: colors.primary,
-    fontWeight: "500",
-  },
-  subCategoryScroll: {
-    flex: 1,
-  },
-  subCategoryGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    paddingHorizontal: 8,
-    paddingVertical: 12,
-    gap: 8,
-  },
-  subCategoryItem: {
-    width: (width - 48) / 5,
-    alignItems: "center",
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  subCategoryItemActive: {
-    backgroundColor: `${colors.primary}15`,
-  },
-  subCategoryIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.secondary,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 4,
-  },
-  subCategoryText: {
-    fontSize: 11,
-    color: colors.text,
-    textAlign: "center",
-  },
-  subCategoryTextActive: {
-    color: colors.primary,
-    fontWeight: "500",
-  },
-  bottomBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    backgroundColor: colors.screenBackground,
-  },
-  bottomLeft: {
-    flexDirection: "row",
-    gap: 16,
-  },
-  bottomAction: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  bottomActionText: {
-    fontSize: 12,
-    color: colors.mutedText,
-  },
-  amountDisplay: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: colors.expense,
-  },
-  remarkInput: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  remarkLabel: {
-    fontSize: 12,
-    color: colors.mutedText,
-    marginRight: 8,
-  },
-  remarkValue: {
-    fontSize: 12,
-    color: colors.text,
-  },
-  toolbar: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    gap: 4,
-  },
-  toolbarItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  toolbarText: {
-    fontSize: 11,
-    color: colors.mutedText,
-  },
-  keyboard: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    backgroundColor: colors.screenBackground,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-  },
-  key: {
-    width: "25%",
-    height: 56,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 0.5,
-    borderColor: colors.border,
-  },
-  keyText: {
-    fontSize: 20,
-    fontWeight: "500",
-    color: colors.text,
-  },
-  keyGray: {
-    backgroundColor: colors.secondary,
-  },
-  keyColumn: {
-    width: "25%",
-    height: 56,
-  },
-  keySmall: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 0.5,
-    borderColor: colors.border,
-    backgroundColor: colors.secondary,
-  },
-  keyTextSmall: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: colors.text,
-  },
-});

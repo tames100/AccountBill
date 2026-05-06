@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import BOTTOM_TABS from "@/config/navigatorTab";
 import { Icon } from "@/components/UI";
-import { colors } from "@/constants/theme";
+import { tw } from "@/constants/theme";
 import { settings } from "@/config/setting";
 import { Text } from "react-native";
 
@@ -22,12 +22,12 @@ export default function TabLayout() {
               tabBarIcon: ({ color, focused }) => (
                 <Icon
                   name={ focused ? item.activeIcon : item.icon }
-                  color={ focused ? colors.primary : color }
+                  color={ focused ? tw.colors.primary : color }
                   size={ 24 }/>
               ),
               tabBarShowLabel: settings.isShowBottomTabLabel,
               tabBarLabel: ({ color, focused }) => <Text style={ {
-                color: focused ? colors.primary : color,
+                color: focused ? tw.colors.primary : color,
                 fontSize: 10
               } }>
                 { item.title }

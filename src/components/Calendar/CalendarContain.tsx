@@ -4,16 +4,13 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  StyleSheet,
   Animated,
-  PanResponder,
 } from "react-native";
 import CalendarGrid from "@/components/Calendar/CalendarGrid";
 import { useTransactionStore } from "@/stores";
 import { Icon } from "@/components/UI";
-import { colors } from "@/constants/theme";
+import { tw } from "@/constants/theme";
 import { formatAmount } from "@/utils";
-import { useLunarInfo } from "@/hooks/useLunarInfo";
 import Value = Animated.Value;
 import { Transaction } from "@/types/transaction";
 
@@ -29,7 +26,11 @@ interface CalendarContainProps {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
   animatedHeight: Value;
-  getDayTransactions: (day: number)=>{ income:number, expense :number, transactions: Transaction[] };
+  getDayTransactions: (day: number) => {
+    income: number;
+    expense: number;
+    transactions: Transaction[];
+  };
 }
 
 export default function CalendarContain(props: CalendarContainProps) {
@@ -37,14 +38,12 @@ export default function CalendarContain(props: CalendarContainProps) {
     currentDate,
     selectedDate,
     onDateSelect,
-    animatedHeight : animatedHeightProps,
+    animatedHeight: animatedHeightProps,
     isCollapsed,
     onToggleCollapse,
   } = props;
 
-  const animatedHeight = useRef(
-    animatedHeightProps,
-  ).current;
+  const animatedHeight = useRef(animatedHeightProps).current;
   const transactionStore = useTransactionStore();
 
   const year = currentDate.getFullYear();
@@ -99,253 +98,103 @@ export default function CalendarContain(props: CalendarContainProps) {
     });
   }, [getDayTransactions, selectedDate]);
 
-  // 获取选中日期的收支汇总
-  const selectedDaySummary = useMemo(() => {
-    const { income, expense } = getDayTransactions(selectedDate.getDate());
-    return { income, expense, balance: income - expense };
-  }, [getDayTransactions, selectedDate]);
-
-  const { getSomeLunarInfo } = useLunarInfo(new Date());
-
-  // 获取选中日期的农历
-  const selectedLunarInfo = useMemo(() => {
-    const { lunarDay, festival } = getSomeLunarInfo(selectedDate);
-    return { lunarDay, festival };
-  }, [selectedDate]);
-
-  // 左右滑动处理
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        return Math.abs(gestureState.dx) > 20;
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx < -50) {
-          // 向左滑 - 触发父组件的切换逻辑
-        } else if (gestureState.dx > 50) {
-          // 向右滑 - 触发父组件的切换逻辑
-        }
-      },
-    }),
-  ).current;
-
   return (
-    <View style={ styles.container } { ...panResponder.panHandlers }>
-      {/* 日历区域 */ }
-      <Animated.View
-        style={ [styles.calendarContainer, { height: animatedHeight }] }
-      >
+    <Animated.View style={ { height: animatedHeight } }>
+      <View className="bg-white rounded-3xl shadow-sm">
+        {/* 日历网格 */ }
         <CalendarGrid
           currentDate={ currentDate }
           selectedDate={ selectedDate }
           onDateSelect={ onDateSelect }
-          isCollapsed={ isCollapsed }
           getDayTransactions={ getDayTransactions }
-        />
+          isCollapsed={ false }/>
 
-        {/* 折叠/展开按钮 */ }
+        {/* 折叠按钮 */ }
         <TouchableOpacity
-          style={ styles.collapseButton }
+          activeOpacity={ 0.8 }
           onPress={ toggleCollapse }
-          activeOpacity={ 0.7 }
+          className="items-center py-2 border-t border-border"
         >
           <Icon
-            name={ isCollapsed ? "chevron-down-outline" : "chevron-up-outline" }
-            size={ 20 }
-            color={ colors.mutedText }
+            name={ isCollapsed ? "chevron-down" : "chevron-up" }
+            size={ 16 }
+            color={ tw.colors.mutedText }
           />
         </TouchableOpacity>
-      </Animated.View>
 
-      {/* 选中日期信息 */ }
-      <View style={ styles.selectedDateInfo }>
-        <Text style={ styles.selectedDateText }>
-          今天 { selectedLunarInfo.festival || selectedLunarInfo.lunarDay || "" }
-        </Text>
-        <View style={ styles.selectedDateSummary }>
-          <Text style={ [styles.selectedDateAmount, { color: colors.income }] }>
-            收 { formatAmount(selectedDaySummary.income) }
-          </Text>
-          <Text style={ [styles.selectedDateAmount, { color: colors.expense }] }>
-            支 { formatAmount(selectedDaySummary.expense) }
-          </Text>
-          <Text
-            style={ [
-              styles.selectedDateAmount,
-              {
-                color:
-                  selectedDaySummary.balance >= 0
-                    ? colors.income
-                    : colors.expense,
-              },
-            ] }
-          >
-            余 { formatAmount(selectedDaySummary.balance) }
-          </Text>
-        </View>
-      </View>
-
-      {/* 交易记录列表 */ }
-      <ScrollView
-        style={ styles.transactionList }
-        showsVerticalScrollIndicator={ false }
-      >
-        { selectedDayTransactions.length === 0 ? (
-          <View style={ styles.emptyState }>
-            <Icon name="receipt-outline" size={ 48 } color={ colors.muted }/>
-            <Text style={ styles.emptyText }>暂无账单记录</Text>
-          </View>
-        ) : (
-          selectedDayTransactions.map((tx, idx) => (
-            <TouchableOpacity key={ idx } style={ styles.transactionItem }>
-              <View style={ styles.transactionLeft }>
-                <View style={ styles.transactionIcon }>
-                  <Icon
-                    name={
-                      tx.type === "income"
-                        ? "arrow-down-circle-outline"
-                        : "arrow-up-circle-outline"
-                    }
-                    size={ 24 }
-                    color={
-                      tx.type === "income" ? colors.income : colors.expense
-                    }
-                  />
-                </View>
-                <View style={ styles.transactionInfo }>
-                  <Text style={ styles.transactionTitle }>
-                    { tx.remark || tx.categoryId }
-                  </Text>
-                  <Text style={ styles.transactionTime }>
-                    { new Date(tx.createTime).toLocaleTimeString("zh-CN", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }) }
-                  </Text>
-                  { tx.account && (
-                    <Text style={ styles.transactionAccount }>{ tx.account }</Text>
-                  ) }
-                </View>
-              </View>
-              <Text
-                style={ [
-                  styles.transactionAmount,
-                  {
-                    color:
-                      tx.type === "income" ? colors.income : colors.expense,
-                  },
-                ] }
-              >
-                { tx.type === "income" ? "+" : "-" }
-                { formatAmount(tx.amount) }
+        {/* 选中日期信息 */ }
+        { !isCollapsed && (
+          <>
+            <View className="flex-row justify-between items-center px-4 py-3 bg-white mt-2 mx-3 rounded-xl">
+              <Text className="text-sm font-medium text-text">
+                { selectedDate.getMonth() + 1 }月{ selectedDate.getDate() }日
               </Text>
-            </TouchableOpacity>
-          ))
+              <View className="flex-row gap-3">
+                <Text className="text-xs font-medium text-income">
+                  收入:{ " " }
+                  { formatAmount(
+                    getDayTransactions(selectedDate.getDate()).income,
+                  ) }
+                </Text>
+                <Text className="text-xs font-medium text-expense">
+                  支出:{ " " }
+                  { formatAmount(
+                    getDayTransactions(selectedDate.getDate()).expense,
+                  ) }
+                </Text>
+              </View>
+            </View>
+
+            {/* 交易列表 */ }
+            <ScrollView className="flex-1 px-3 mt-2">
+              { selectedDayTransactions.length === 0 ? (
+                <View className="items-center justify-center py-12">
+                  <Icon name="file-tray" size={ 32 } color={ tw.colors.text }/>
+                  <Text className="text-sm text-mutedText mt-3">
+                    暂无交易记录
+                  </Text>
+                </View>
+              ) : (
+                selectedDayTransactions.map((transaction) => (
+                  <View
+                    key={ transaction.id }
+                    className="flex-row items-center justify-between bg-white rounded-xl p-3 mb-2"
+                  >
+                    <View className="flex-row items-center flex-1">
+                      <View
+                        className="w-10 h-10 rounded-full items-center justify-center"
+                      >
+                        <Icon
+                          name={ "home" }
+                          size={ 20 }
+                        />
+                      </View>
+                      <View className="ml-3 flex-1">
+                        <Text className="text-sm font-medium text-text">
+                          { transaction.remark }
+                        </Text>
+                        <Text className="text-xs text-mutedText">
+                          { transaction.amount }
+                        </Text>
+                      </View>
+                    </View>
+                    <Text
+                      className={ `text-sm font-medium ${
+                        transaction.type === "income"
+                          ? "text-income"
+                          : "text-expense"
+                      }` }
+                    >
+                      { transaction.type === "income" ? "+" : "-" }
+                      { formatAmount(transaction.amount) }
+                    </Text>
+                  </View>
+                ))
+              ) }
+            </ScrollView>
+          </>
         ) }
-      </ScrollView>
-    </View>
+      </View>
+    </Animated.View>
   );
 }
-
-// ==================== 样式定义 ====================
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.screenBackground,
-  },
-  calendarContainer: {
-    backgroundColor: "#fff",
-    overflow: "hidden",
-  },
-  collapseButton: {
-    alignItems: "center",
-    paddingVertical: 8,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-  },
-  selectedDateInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-    marginTop: 8,
-    marginHorizontal: 12,
-    borderRadius: 12,
-  },
-  selectedDateText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: colors.text,
-  },
-  selectedDateSummary: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  selectedDateAmount: {
-    fontSize: 13,
-    fontWeight: "500",
-  },
-  transactionList: {
-    flex: 1,
-    paddingHorizontal: 12,
-    marginTop: 8,
-  },
-  emptyState: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 48,
-  },
-  emptyText: {
-    fontSize: 14,
-    color: colors.mutedText,
-    marginTop: 12,
-  },
-  transactionItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
-  },
-  transactionLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  transactionIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: `${ colors.primary }15`,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
-  },
-  transactionInfo: {
-    flex: 1,
-  },
-  transactionTitle: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: colors.text,
-  },
-  transactionTime: {
-    fontSize: 12,
-    color: colors.mutedText,
-    marginTop: 2,
-  },
-  transactionAccount: {
-    fontSize: 11,
-    color: colors.mutedText,
-    marginTop: 2,
-  },
-  transactionAmount: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});

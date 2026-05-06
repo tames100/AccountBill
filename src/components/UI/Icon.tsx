@@ -1,8 +1,8 @@
 import {
   Ionicons
 } from '@expo/vector-icons';
-import { colors } from "@/constants/theme";
 import { IconName } from "@/types/icon";
+import { tw } from "@/constants/theme";
 
 interface IconProps {
   name: IconName;
@@ -13,8 +13,8 @@ interface IconProps {
 export default function Icon({ name, color, size }: IconProps) {
 
   return <Ionicons
-    name={name}
-    color={ color ?? colors.primary }
+    name={ name }
+    color={ color ?? tw.colors.primary }
     size={ size ?? 24 }
     strokeWidth={ 2 }
   />;

@@ -1,5 +1,5 @@
-import { colors } from "@/constants/theme";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { tw } from "@/constants/theme";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "@/components/UI";
 
 /**
@@ -14,63 +14,30 @@ import { Icon } from "@/components/UI";
  */
 function TabHeader() {
   return (
-    <View style={ styles.header }>
-      {/* 账本选择 */ }
-      <View style={ styles.headerLeft }>
+    <View className="w-full h-7 flex-row items-center justify-between">
+      {/* 账本选择 */}
+      <View className="flex-1 flex-row items-start">
         <TouchableOpacity activeOpacity={0.9}>
-          <View style={ styles.bill }>
+          <View className="flex flex-row gap-2.5">
             <Icon name={"wallet"} />
-            <Text style={ { fontSize: 18, fontWeight: 500, color: colors.ring } }>生活日常</Text>
+            <Text className="text-lg font-medium text-ring">生活日常</Text>
           </View>
         </TouchableOpacity>
       </View>
-      <View style={ styles.action }>
+      <View className="flex-2 flex-row justify-end gap-2.5">
         <TouchableOpacity activeOpacity={0.9}>
-          <View style={ styles.icon }>
+          <View className="flex-row gap-2.5">
             <Icon name={"search"} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.9}>
-          <View style={ styles.icon }>
+          <View className="flex-row gap-2.5">
             <Icon name={"ellipsis-vertical"} />
           </View>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 }
-
-const styles = StyleSheet.create({
-    header: {
-      width: "100%",
-      height: 30,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    headerLeft: {
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "flex-start",
-
-    },
-    bill: {
-      display: "flex",
-      flexDirection: "row",
-      gap: 10
-    },
-    action: {
-      flex: 2,
-      flexDirection: "row",
-      justifyContent: "flex-end",
-      gap: 10
-    },
-    icon: {
-      flexDirection: "row",
-      gap: 10,
-
-    }
-  }
-)
 
 export default TabHeader;

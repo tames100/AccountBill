@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, ViewStyle } from "react-native";
 
 interface CardProps {
   padding?: number;
@@ -11,43 +11,63 @@ interface CardProps {
   borderWidth?: number;
   borderColor?: string;
   children: React.ReactNode;
+  style?: ViewStyle;
 }
 
-/**
- * 卡片容器
- * @param props
- * @param children
- * @constructor
- */
-export default function Card(props: CardProps) {
-  const {
-    backgroundColor,
-    borderRadius,
-    marginBottom,
-    marginTop,
-    padding,
-    isBorder,
-    borderWidth,
-    borderColor,
-    children,
-  } = props;
+export default function Card({
+  backgroundColor = "bg-primary",
+  marginBottom = 4,
+  marginTop = 0,
+  padding = 4,
+  borderRadius = 16,
+  isBorder = false,
+  borderWidth = 1,
+  borderColor = "border-border",
+  children,
+  style,
+}: CardProps) {
+  const marginBottomStyle: ViewStyle = marginBottom
+    ? { marginBottom: marginBottom * 4 }
+    : {};
+  const marginTopStyle: ViewStyle = marginTop
+    ? { marginTop: marginTop * 4 }
+    : {};
+  const paddingStyle: ViewStyle = padding
+    ? { padding: padding * 4 }
+    : { padding: 16 };
+  const borderRadiusStyle: ViewStyle = borderRadius
+    ? { borderRadius: borderRadius }
+    : { borderRadius: 16 };
+
+  const bgColorMap: Record<string, string> = {
+    primary: "bg-primary",
+    white: "bg-white",
+    income: "bg-income",
+    expense: "bg-expense",
+  };
+
+  const borderColorMap: Record<string, string> = {
+    "border-border": "rgba(0, 0, 0, 0.08)",
+  };
 
   return (
     <View
-      className={`
-        shadow-sm
-        ${backgroundColor ? `bg-[${backgroundColor}]` : "bg-white"}
-        ${padding ? `p-[${padding}px]` : "p-4"}
-        ${marginBottom ? `mb-[${marginBottom}px]` : "mb-4"}
-        ${marginTop ? `mt-[${marginTop}px]` : "mt-4"}
-        ${borderRadius ? `rounded-[${borderRadius}px]` : "rounded-2xl"}
-        ${isBorder ? (borderWidth ? `border-[${borderWidth}px]` : "border") : "border"}
-        ${isBorder && borderColor ? `border-[${borderColor}]` : "border-border"}
-      `}
+      className={`shadow-sm ${bgColorMap[backgroundColor] || "bg-primary"} rounded-2xl ${isBorder ? "border" : "border"}`}
+      style={[
+        paddingStyle,
+        marginBottomStyle,
+        marginTopStyle,
+        borderRadiusStyle,
+        isBorder
+          ? {
+              borderWidth: borderWidth,
+              borderColor: borderColorMap[borderColor] || borderColor,
+            }
+          : {},
+        style,
+      ]}
     >
       {children}
     </View>
   );
 }
-
-// 样式已迁移到nativeWind类名

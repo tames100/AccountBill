@@ -165,5 +165,3 @@ export default function Calendar() {
     </LayoutComponent>
   );
 }
-
-// 样式已迁移到nativeWind类名

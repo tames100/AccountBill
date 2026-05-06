@@ -1,8 +1,10 @@
 import { View, Text } from "react-native";
+import { tw } from "@/constants/theme";
+import { TransactionType } from "@/types/transaction";
 
 interface CategoryIconProps {
   name: string;
-  type: "income" | "expense";
+  type: TransactionType;
   size?: number;
 }
 
@@ -54,25 +56,23 @@ const categoryIcons: Record<string, string> = {
 
 export function CategoryIcon({ name, type, size = 24 }: CategoryIconProps) {
   const icon = categoryIcons[name] || "📦";
-  const colorClass = type === "income" ? "text-income" : "text-expense";
-  const bgColorClass = type === "income" ? "bg-income/10" : "bg-expense/10";
+  const bgColor =
+    type === "income" ? "rgba(76, 172, 144, 0.1)" : "rgba(250, 86, 84, 0.1)";
 
   return (
     <View
-      className={`
-        ${bgColorClass}
-        items-center justify-center
-      `}
+      className="items-center justify-center"
       style={{
         width: size,
         height: size,
         borderRadius: size / 2,
+        backgroundColor: bgColor,
       }}
     >
       <Text
-        className={colorClass}
         style={{
           fontSize: size * 0.7,
+          color: type === "income" ? "#4cac90" : "#fa5654",
         }}
       >
         {icon}
