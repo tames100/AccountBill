@@ -1,9 +1,9 @@
-import { Text, View } from "react-native";
-import { Icon, Card } from "@/components/UI";
+import { Card, Icon } from "@/components/UI";
+import { tw } from "@/constants/theme";
+import { IconName } from "@/types/icon";
 import { formatAmount } from "@/utils";
 import { printLog } from "@/utils/printLog";
-import { IconName } from "@/types/icon";
-import { tw } from "@/constants/theme";
+import { Text, View } from "react-native";
 
 interface BalanceCardProps {
   income: number;
@@ -84,5 +84,3 @@ export default function BalanceCard({ income, expense }: BalanceCardProps) {
     </Card>
   );
 }
-
-// 样式已迁移到nativeWind类名

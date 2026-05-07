@@ -1,4 +1,3 @@
-import "../../global.css"; // 导入全局CSS
 import { settings } from "@/config/setting";
 import {
   DarkTheme,
@@ -6,6 +5,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
+import "../../global.css"; // 导入全局CSS
 
 export default function RootLayout() {
   return (
