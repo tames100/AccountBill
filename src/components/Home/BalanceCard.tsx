@@ -2,7 +2,6 @@ import { Card, Icon } from "@/components/UI";
 import { tw } from "@/constants/theme";
 import { IconName } from "@/types/icon";
 import { formatAmount } from "@/utils";
-import { printLog } from "@/utils/printLog";
 import { Text, View } from "react-native";
 
 interface BalanceCardProps {
@@ -19,11 +18,6 @@ interface mountItem {
 
 export default function BalanceCard({ income, expense }: BalanceCardProps) {
   const textColor = "rgba(255, 255, 255, 0.7)";
-
-  printLog(income.toString(), "income", expense.toString(), "expense");
-
-  printLog(formatAmount(income));
-
   const mount: mountItem[] = [
     {
       label: "本月收入",
@@ -46,15 +40,14 @@ export default function BalanceCard({ income, expense }: BalanceCardProps) {
   ];
 
   return (
-    <Card marginBottom={16} backgroundColor="primary">
+    <Card className={" bg-primary "}>
       <View className="flex-row items-center gap-6 mb-4">
         {mount.map((item, index) => (
           <View className="flex-col gap-1.5" key={index}>
             <View className="flex-row">
               <Icon name={item.icon} size={16} color={textColor} />
               <Text
-                className="text-xs font-normal"
-                style={{ color: textColor }}
+                className="text-xs font-normal color-white/70"
               >
                 {item.label}
               </Text>
@@ -73,10 +66,10 @@ export default function BalanceCard({ income, expense }: BalanceCardProps) {
       <View className="flex-col gap-1.5 justify-start">
         <View className="flex-row">
           <Icon name={"arrow-up-circle"} size={16} color={textColor} />
-          <Text className="text-xs font-normal text-white">今年结余</Text>
+          <Text className="text-xs font-normal color-white/70">今年结余</Text>
         </View>
         <View>
-          <Text className="text-2xl font-medium leading-9 text-text">
+          <Text className="text-2xl font-medium color-text">
             {formatAmount(income)}
           </Text>
         </View>

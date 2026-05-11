@@ -56,26 +56,11 @@ const categoryIcons: Record<string, string> = {
 
 export function CategoryIcon({ name, type, size = 24 }: CategoryIconProps) {
   const icon = categoryIcons[name] || "📦";
-  const bgColor =
-    type === "income" ? "rgba(76, 172, 144, 0.1)" : "rgba(250, 86, 84, 0.1)";
 
   return (
-    <View
-      className="items-center justify-center"
-      style={{
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-        backgroundColor: bgColor,
-      }}
-    >
-      <Text
-        style={{
-          fontSize: size * 0.7,
-          color: type === "income" ? "#4cac90" : "#fa5654",
-        }}
-      >
-        {icon}
+    <View className={ `items-center justify-center size-[${ size }] rounded-full` }>
+      <Text className="text-2xl">
+        { icon }
       </Text>
     </View>
   );

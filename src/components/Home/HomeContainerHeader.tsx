@@ -1,8 +1,13 @@
-
 import React from 'react';
-import {View} from 'react-native';
+import { Text, View } from 'react-native';
+import { BalanceCard } from "@/components/Home/index";
+import { Button } from "@/components/UI";
+import { useRouter } from "expo-router";
+import { pageRouter } from "@/config/router";
 
 interface HomeContainerHeaderProps {
+  income: number;
+  expenses: number;
 }
 
 /**
@@ -11,10 +16,24 @@ interface HomeContainerHeaderProps {
  * @constructor
  */
 export default function HomeContainerHeader(props: HomeContainerHeaderProps) {
-  const {} = props;
-  const title = "123";
+  const {income, expenses} = props;
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(pageRouter.noTabPage.addTransaction);
+  }
 
   return (
-    <View>{title}</View>
+    <View>
+      <BalanceCard
+        income={ income }
+        expense={ expenses }/>
+      <Button
+        className={ "bg-primary" }
+        onPress={ handleClick}
+      >
+        <Text className={ "text-xl color-white font-medium" }>添加一笔账单</Text>
+      </Button>
+    </View>
   );
 }

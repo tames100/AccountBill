@@ -1,3 +1,7 @@
+type FormatDate = "yyyy-MM-dd" | "yyyy-M-d" | "yyyy年MM月dd日" | "yyyy年M月d日"
+
+type FormatDateForMonthDay = "MM-dd" | "M-d" | "MM月dd日" | "M月d日"
+
 /**
  * 格式化当前金额
  * @param amount
@@ -30,6 +34,7 @@ export function formatAmount(num: number): string {
   return res
 }
 
+// 有符号的金额
 export function formatCurrencyWithSign(amount: number): string {
   const formatted = formatCurrency(amount);
   return amount >= 0 ? `+${ formatted }` : `-${ formatted }`;
@@ -39,32 +44,71 @@ export function formatCurrencyWithSign(amount: number): string {
 /**
  * 格式化日期
  * @param date
+ * @param format
  */
-export function formatDate(date: Date): string {
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+export function formatDate(date: Date, format: FormatDate = "yyyy-MM-dd"): string {
+  const year = date.getFullYear()
+  const m = (date.getMonth() + 1).toString()
+  const d = date.getDate().toString()
+  const mm = m.padStart(2, '0')
+  const dd = d.padStart(2, '0')
+
+  let res = `${ year }-${ mm }-${ dd }`
+  if (format === "yyyy-M-d") {
+    res = `${ year }-${ m }-${ d }`
+  } else if (format === "yyyy年M月d日") {
+    res = `${ year }年${ m }月${ d }日`
+  } else if (format === "yyyy年MM月dd日") {
+    res = `${ year }年${ mm }月${ dd }日`
+  }
+  return res;
+}
+
+// 格式化时间，月和日
+export function formatDateForMonthDay(date: Date, format: FormatDateForMonthDay = "MM-dd") {
+  const m = date.getMonth() + 1;
+  const d = date.getDate();
+  const mm = m.toString().padStart(2, "0");
+  const dd = m.toString().padStart(2, "0");
+
+  let res = `${ mm }-${ dd }`;
+  if (format === "M-d") {
+    res = `${ m }-${ d }`
+  } else if (format === "M月d日") {
+    res = `${ m }月${ d }日`
+  } else if (format === "MM月dd日") {
+    res = `${ mm }月${ dd }日`
+  }
+  return res
 }
 
 /**
- * 格式化时间
+ * 格式化时间十二小时制
  * @param date
  */
-export function formatTime(date: Date): string {
-  return date.toLocaleTimeString('zh-CN', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+export function formatTime12(date: Date): string {
+  const hours = (date.getHours() % 12).toString().padStart(2, '0');
+  const minutes = (date.getMinutes() % 12).toString().padStart(2, '0');
+  return `${ hours }:${ minutes }`;
+}
+
+/**
+ * 格式化时间二十四小时制
+ * @param date
+ */
+export function formatTime24(date: Date): string {
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${ hours }:${ minutes }`;
 }
 
 /**
  * 格式化日期和时间
  * @param date
+ * @param formatTime
  */
-export function formatDateTime(date: Date): string {
-  return `${ formatDate(date) } ${ formatTime(date) }`;
+export function formatDateTime(date: Date, formatTime: "hour12" | "hour24" = "hour24"): string {
+  return `${ formatDate(date) } ${ formatTime === "hour12" ? formatTime12(date) : formatTime24(date) }`;
 }
 
 export function getRelativeDate(date: Date): string {

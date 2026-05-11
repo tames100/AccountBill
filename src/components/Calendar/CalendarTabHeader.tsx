@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { formatAmount } from "@/utils";
 import { Icon } from "@/components/UI";
-import { tw } from "@/constants/theme"
+import { tw } from "@/constants/theme";
 
 interface CalendarTabHeaderProps {
   year: number;
@@ -20,60 +20,56 @@ export default function CalendarTabHeader(props: CalendarTabHeaderProps) {
   const {
     year,
     month,
-    // selectedDate,
+    selectedDate,
     selectedDaySummary,
-    // onPrevMonth,
-    // onNextMonth,
-    // onPrevWeek,
-    // onNextWeek,
+    onPrevMonth,
+    onNextMonth,
+    onPrevWeek,
+    onNextWeek,
     onToday,
-    // isCollapsed,
+    isCollapsed,
   } = props;
 
   return (
     <View className="flex-row justify-between items-center">
       <View>
         <Text className="text-xl font-semibold text-text">
-          { year }年{ month }月
+          {year}年{month}月
         </Text>
         <View className="flex-row justify-around">
           <View className="flex-row items-center">
             <Text className="text-xs text-text mr-1">收</Text>
             <Text className="text-xs text-income mr-2">
-              { formatAmount(selectedDaySummary.income) }
+              {formatAmount(selectedDaySummary.income)}
             </Text>
           </View>
           <View className="flex-row items-center">
             <Text className="text-xs text-text mr-1">支</Text>
             <Text className="text-xs text-expense mr-2">
-              { formatAmount(selectedDaySummary.expense) }
+              {formatAmount(selectedDaySummary.expense)}
             </Text>
           </View>
           <View className="flex-row items-center">
             <Text className="text-xs text-text mr-1">余</Text>
             <Text
-              className="text-xs mr-2"
-              style={ {
-                color:
-                  selectedDaySummary.balance >= 0
-                    ? tw.colors.income
-                    : tw.colors.expense,
-              } }
+              className={ `text-xs mr-2 ${selectedDaySummary.balance >= 0
+                ? "color-income"
+                : "color-expense"} ` }
             >
-              { formatAmount(selectedDaySummary.balance) }
+              {formatAmount(selectedDaySummary.balance)}
             </Text>
           </View>
         </View>
       </View>
       <View className="flex-row">
-        <TouchableOpacity onPress={ onToday }>
+        <TouchableOpacity onPress={onToday}>
           <Text className="text-xl px-2">今</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name="add-circle" size={ 28 } color={ tw.colors.primary }/>
+          <Icon name="add-circle" size={28} color={tw.colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Icon name="ellipsis-vertical" size={ 28 } color={ tw.colors.text }/>
+          <Icon name="ellipsis-vertical" size={28} color={tw.colors.primary} />
         </TouchableOpacity>
       </View>
     </View>

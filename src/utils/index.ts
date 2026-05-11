@@ -9,6 +9,7 @@ import {
   getRelativeDate,
   parseDate
 } from "./format"
+import {ClassNameJoin, ClassNameJoinPX} from "./classNameJoin"
 
 export {
   formatDate,
@@ -20,4 +21,6 @@ export {
   formatCurrencyWithSign,
   getRelativeDate,
   parseDate,
+  ClassNameJoin,
+  ClassNameJoinPX,
 }

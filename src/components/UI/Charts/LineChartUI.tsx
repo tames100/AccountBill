@@ -2,8 +2,8 @@ import { LineChart } from "react-native-chart-kit";
 import { LineChartProps } from "react-native-chart-kit/dist/line-chart/LineChart";
 import { screenWidth } from "@/constants/screen";
 import { chartConfig } from "@/config/chartCnonfig";
-
-export default function LineChartUI(props: LineChartProps) {
+// props: LineChartProps
+export default function LineChartUI() {
 
   const data = {
     labels: ["1月", "2月", "3月", "4月", "5月", "6月"],

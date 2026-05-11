@@ -1,63 +1,70 @@
+// dbhelper.ts
 import * as SQLite from 'expo-sqlite';
-import { BaseDBHelper } from "@/db/DBHelper/BaseDBHelper";
-import { Primitive } from "./types";
-import { databaseName } from "@/db/TableName";
+import { BaseDbHelper, SQLiteDatabase } from './BaseDBHelper';
 
-class DBHelper extends BaseDBHelper {
-  private db: SQLite.SQLiteDatabase | null = null;
+/**
+ * 数据库单例助手
+ * 负责数据库的创建、升级及所有表的初始化
+ */
+export class DbHelper extends BaseDbHelper {
+  private static instance: DbHelper;
+  private dbInstance: SQLiteDatabase | null = null;
+  private isInitialized = false;
 
-  // 打开数据库（单例模式）
-  async open(): Promise<SQLite.SQLiteDatabase> {
-    if (this.db) return this.db;
-    // 数据库名称：记账本
-    this.db = await SQLite.openDatabaseAsync(databaseName);
-    return this.db;
+  private constructor() {
+    super();
   }
 
-  async close(): Promise<void> {
-    if (this.db) {
-      await this.db.closeAsync();
-      this.db = null;
+  public static getInstance(): DbHelper {
+    if (!DbHelper.instance) {
+      DbHelper.instance = new DbHelper();
     }
+    return DbHelper.instance;
   }
 
-  private ensureDb(): SQLite.SQLiteDatabase {
-    if (!this.db) throw new Error('Database not opened. Call open() first.');
-    return this.db;
-  }
-
-  async executeSql(sql: string, params: Primitive[] = []): Promise<{ rowsAffected: number, insertId?: number }> {
-    const db = this.ensureDb();
-    const result = await db.runAsync(sql, ...params);
-
-    return {
-      rowsAffected: result.changes,
-      insertId: result.lastInsertRowId
+  // 实现抽象方法：获取数据库实例
+  protected async getDatabase(): Promise<SQLiteDatabase> {
+    if (!this.dbInstance) {
+      // 打开或创建数据库文件（例如 myapp.db）
+      this.dbInstance = await SQLite.openDatabaseAsync('myapp.db');
     }
+    return this.dbInstance;
   }
 
-  async queryAll<T>(sql: string, params: Primitive[] = []): Promise<T[]> {
-    const db = this.ensureDb();
-    return db.getAllAsync<T>(sql, ...params);
+  /**
+   * 初始化数据库：创建所有表（如果不存在）
+   * 应在 App 启动时调用一次
+   */
+  public async initDatabase(): Promise<void> {
+    if (this.isInitialized) return;
+
+    const db = await this.getDatabase();
+    // 使用 executeSql（基类方法）创建表
+    await this.executeSql(`
+      CREATE TABLE IF NOT EXISTS bills (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        amount REAL NOT NULL,
+        type TEXT NOT NULL CHECK(type IN ('income', 'expense')),
+        date TEXT NOT NULL,
+        note TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // 可以创建索引提升查询性能
+    await this.executeSql(`CREATE INDEX IF NOT EXISTS idx_bills_date ON bills(date)`);
+    await this.executeSql(`CREATE INDEX IF NOT EXISTS idx_bills_type ON bills(type)`);
+
+    this.isInitialized = true;
+    console.log('Database initialized');
   }
 
-  async queryOne<T>(sql: string, params: Primitive[] = []): Promise<T | null> {
-    const db = this.ensureDb();
-    const result = await db.getFirstAsync<T>(sql, ...params);
-    return result ?? null;
-  }
-
-  // 事务支持
-  async beginTransaction(): Promise<void> {
-    await this.executeSql('BEGIN TRANSACTION');
-  }
-  async commitTransaction(): Promise<void> {
-    await this.executeSql('COMMIT');
-  }
-  async rollbackTransaction(): Promise<void> {
-    await this.executeSql('ROLLBACK');
+  /**
+   * 获取原始数据库实例（供复杂查询使用，非必须）
+   */
+  public async getRawDb(): Promise<SQLiteDatabase> {
+    return this.getDatabase();
   }
 }
-
-// 导出单例
-export const DatabaseHelper = new DBHelper();

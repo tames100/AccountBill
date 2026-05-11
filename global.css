@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 定义CSS变量 */
+:root {
+    /* 颜色变量 */
+    --color-primary: #889871;
+    --color-income: #4cac90;
+    --color-expense: #fa5654;
+    --color-balance: #FF9800;
+    --color-income-dark: #2F705E;
+    --color-expense-dark: #B83230;
+    --color-balance-dark: #BA6A00;
+    --color-screen-background: #f8f9f6;
+    --color-text: #000000;
+    --color-card-text: #000000;
+    --color-popover: #ffffff;
+    --color-popover-text: #000000;
+    --color-primary-text: #ffffff;
+    --color-secondary: #f0f0f4;
+    --color-secondary-text: #030213;
+    --color-muted: #ececf0;
+    --color-muted-text: #717182;
+    --color-accent: #e9ebef;
+    --color-accent-text: #030213;
+    --color-destructive: #d4183d;
+    --color-destructive-text: #ffffff;
+    --color-border: rgba(0, 0, 0, 0.08);
+    --color-input: transparent;
+    --color-input-background: #f3f3f5;
+    --color-switch-background: #cbced4;
+    --color-ring: #717182;
+    --color-chart1: #57c0e6;
+    --color-chart2: #45a29e;
+    --color-chart3: #3b7eb8;
+    --color-chart4: #e8d68c;
+    --color-chart5: #d9c869;
+
+    /* 字体大小变量 */
+    --font-size-xs: 10px;
+    --font-size-sm: 12px;
+    --font-size-base: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 28px;
+    --font-size-3xl: 42px;
+}

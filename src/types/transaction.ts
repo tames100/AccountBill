@@ -12,9 +12,11 @@ export interface Transaction {
   // 分类ID
   categoryId: string;
   // 备注
-  remark: string;
+  remark?: string;
   // 账户
   account: string;
+  // 记账地点
+  local?: string;
   // 账单创建时间（yyyy-MM-dd HH:mm:ss）
   createTime: Date;
   // 账单更新时间（yyyy-MM-dd HH:mm:ss）

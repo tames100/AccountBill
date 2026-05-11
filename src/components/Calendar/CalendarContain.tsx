@@ -13,10 +13,7 @@ import { tw } from "@/constants/theme";
 import { formatAmount } from "@/utils";
 import Value = Animated.Value;
 import { Transaction } from "@/types/transaction";
-
-// 日历折叠高度
-const FULL_CALENDAR_HEIGHT = 360;
-const COLLAPSED_CALENDAR_HEIGHT = 72;
+import { COLLAPSED_CALENDAR_HEIGHT, FULL_CALENDAR_HEIGHT } from "@/constants/calendar";
 
 interface CalendarContainProps {
   currentDate: Date;

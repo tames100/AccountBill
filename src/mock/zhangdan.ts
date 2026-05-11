@@ -5,20 +5,21 @@ export const mockTransactions: Transaction[] = [
     id: '1',
     amount: 5000,
     type: 'income',
-    categoryId: 'salary',
+    categoryId: 'car',
     remark: '10月工资',
-    createTime: new Date('2025-10-01'),
+    createTime: new Date('2025-10-01 12:00'),
     account: "微信余额",
-    updateTime: new Date("2025-10-01")
+    updateTime: new Date("2025-10-01 12:00"),
+    local: "成都市"
   },
   {
     id: '2',
     amount: 32,
     type: 'expense',
-    categoryId: 'food',
+    categoryId: 'creditCard',
     remark: '早餐',
-    createTime: new Date('2025-10-02'),
-    updateTime: new Date('2025-10-02'),
+    createTime: new Date('2025-10-02 12:00'),
+    updateTime: new Date('2025-10-02 12:00'),
     account: "微信余额"
   },
   {
@@ -29,7 +30,8 @@ export const mockTransactions: Transaction[] = [
     categoryId: 'shopping',
     createTime: new Date('2025-10-02'),
     updateTime: new Date('2025-10-02'),
-    account: ""
+    account: "",
+    local: "江苏生"
   },
   {
     id: '4',

@@ -1,26 +1,15 @@
-import { tw } from "@/constants/theme";
-import { Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "@/components/UI";
+import { Text, TouchableOpacity, View } from "react-native";
 
-/**
- * 顶部tab栏
- *
- * 功能：
- * - 切换账本
- * - 搜索
- * - 更多功能
- * @constructor
- * @author thy
- */
 function TabHeader() {
   return (
-    <View className="w-full h-7 flex-row items-center justify-between">
+    <View className="w-full h-7 flex-row items-center justify-between mb-2">
       {/* 账本选择 */}
       <View className="flex-1 flex-row items-start">
         <TouchableOpacity activeOpacity={0.9}>
           <View className="flex flex-row gap-2.5">
             <Icon name={"wallet"} />
-            <Text className="text-lg font-medium text-ring">生活日常</Text>
+            <Text className="text-xl font-medium text-ring">生活日常</Text>
           </View>
         </TouchableOpacity>
       </View>

@@ -1,8 +1,8 @@
 import { Card } from "@/components/UI";
 import { Transaction } from "@/types/index";
-import { formatAmount, formatDate } from "@/utils";
+import { formatAmount, formatDateTime } from "@/utils";
 import { Text, View } from "react-native";
-import { CategoryIcon } from "../CategoryIcon";
+import { CategoryIcon } from "@/components";
 
 interface TransactionCardProps {
   transaction: Transaction;
@@ -10,56 +10,44 @@ interface TransactionCardProps {
 }
 
 export function TransactionCard({
-  transaction,
-  onPress,
-}: TransactionCardProps) {
-  const categoryIcons: Record<string, string> = {
-    餐饮: "☕",
-    交通: "🚗",
-    购物: "🛍️",
-    居住: "🏠",
-    娱乐: "🎮",
-    工资: "💼",
-    兼职: "💻",
-    礼物: "🎁",
-  };
-
-  const icon = categoryIcons[transaction.categoryId] || "📦";
+                                  transaction,
+                                  onPress,
+                                }: TransactionCardProps) {
   const isIncome = transaction.type === "income";
 
   return (
-    <Card
-      marginBottom={5}
-      marginTop={0}
-      borderRadius={16}
-      backgroundColor="white"
-    >
+    <Card className={ "mb-2" } isBorder={true}>
       <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center flex-1 gap-3">
-          <CategoryIcon name={icon} type={transaction.type} size={40} />
+        <View className="flex-row items-start flex-1 gap-3">
+          <CategoryIcon name={ transaction.categoryId } type={ transaction.type } size={ 40 }/>
           <View className="flex-1 gap-1">
-            <Text className="text-base font-medium text-black">
-              {transaction.categoryId}
+            <Text className="text-xl font-medium text-black-100">
+              { transaction.categoryId }
             </Text>
-            <Text className="text-sm text-mutedText max-w-[200px]">
-              {transaction.remark}
-            </Text>
+            { transaction.remark && (<Text className="text-sm text-mutedText max-w-[200px]">
+              { transaction.remark }
+            </Text>) }
+            {
+              transaction.local && (
+                <Text className="text-sm text-mutedText max-w-[200px]">
+                  { transaction.local }
+                </Text>
+              )
+            }
           </View>
         </View>
         <View className="items-end gap-1">
           <Text
-            className={`text-lg font-medium ${isIncome ? "text-income" : "text-expense"}`}
+            className={ `text-lg font-medium ${ isIncome ? "text-income" : "text-expense" }` }
           >
-            {isIncome ? "+" : "-"}
-            {formatAmount(transaction.amount)}
+            { isIncome ? "+" : "-" }
+            { formatAmount(transaction.amount) }
           </Text>
           <Text className="text-xs text-mutedText">
-            {formatDate(transaction.updateTime)}
+            { formatDateTime(transaction.updateTime) }
           </Text>
         </View>
       </View>
     </Card>
   );
 }
-
-// 样式已迁移到nativeWind类名

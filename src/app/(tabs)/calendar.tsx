@@ -3,10 +3,7 @@ import { View, Animated, PanResponder } from "react-native";
 import { LayoutComponent } from "@/components/Common";
 import { CalendarTabHeader, CalendarContain } from "@/components/Calendar";
 import { useTransactionStore } from "@/stores";
-
-// 日历折叠高度
-const FULL_CALENDAR_HEIGHT = 360;
-const COLLAPSED_CALENDAR_HEIGHT = 72;
+import { COLLAPSED_CALENDAR_HEIGHT, FULL_CALENDAR_HEIGHT } from "@/constants/calendar";
 
 export default function Calendar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -18,7 +15,7 @@ export default function Calendar() {
   const transactionStore = useTransactionStore();
 
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const month = currentDate.getMonth() + 1;
 
   // 切换折叠状态
   const toggleCollapse = useCallback(() => {

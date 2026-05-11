@@ -1,8 +1,7 @@
-import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { DayData } from "@/types";
 import { CalendarCellWidth } from "@/constants/calendar";
-import { tw } from "@/constants/theme";
+import { DayData } from "@/types";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface CalendarGridItemProps {
   day: DayData | null;
@@ -16,52 +15,54 @@ interface CalendarGridItemProps {
 export default function CalendarGridItem(props: CalendarGridItemProps) {
   const { day, index, income, expenses, isSelected, onPress } = props;
 
+  const cellWidth = CalendarCellWidth - 10;
+  // 空白日期格
   if (!day)
     return (
       <View
-        key={index}
-        className={`w-[${CalendarCellWidth - 10}px] aspect-[1/0.9] py-1.5 items-center rounded-xl bg-transparent`}
+        key={ index }
+        className={ `w-[${ cellWidth }px] aspect-[1/0.9] flex-1 py-1.5 items-center rounded-xl bg-transparent` }
       />
     );
 
   return (
     <TouchableOpacity
-      className={`
-        w-[${CalendarCellWidth - 10}px] aspect-[1/0.9] py-1.5 items-center rounded-xl
-        ${day.isToday ? "bg-primary" : ""}
-        ${isSelected ? "bg-gray-200" : ""}
-      `}
-      onPress={onPress}
-      activeOpacity={0.7}
+      className={ `
+      flex-1
+         w-[${ cellWidth }px]
+        py-1.5 items-center rounded-xl
+        ${ day.isToday ? "bg-primary" : "" }
+        ${ isSelected ? "bg-gray-200" : "" }
+      ` }
+      onPress={ onPress }
+      activeOpacity={ 0.7 }
     >
       <Text
-        className={`
+        className={ `
           text-lg font-medium text-gray-800
-          ${day.isToday ? "text-primaryText font-bold" : ""}
-          ${isSelected ? "text-gray-800" : ""}
-        `}
+          ${ day.isToday ? "text-primaryText font-bold" : "" }
+          ${ isSelected ? "text-gray-800" : "" }
+        ` }
       >
-        {day.date}
+        { day.date }
       </Text>
       <Text
-        className={`
+        className={ `
           text-xs text-mutedText mt-0.5 text-center
-          ${isSelected ? "text-gray-800" : ""}
-        `}
-        numberOfLines={1}
+          ${ isSelected ? "text-gray-800" : "" }
+        ` }
+        numberOfLines={ 1 }
       >
-        {day.festival || day.lunarDay || ""}
+        { day.festival || day.lunarDay || "" }
       </Text>
-      {(income > 0 || expenses > 0) && (
+      { (income > 0 || expenses > 0) && (
         <View className="mt-1">
-          {income > 0 && (
-            <Text className="text-xs text-income">+{income.toFixed(2)}</Text>
-          )}
-          {expenses > 0 && <Text>-{expenses.toFixed(2)}</Text>}
+          { income > 0 && (
+            <Text className="text-xs text-income">+{ income.toFixed(2) }</Text>
+          ) }
+          { expenses > 0 && <Text>-{ expenses.toFixed(2) }</Text> }
         </View>
-      )}
+      ) }
     </TouchableOpacity>
   );
 }
-
-// 样式已迁移到nativeWind类名

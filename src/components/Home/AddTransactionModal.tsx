@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
+import { Button } from "@/components/UI";
 
 export default function AddTransactionModal() {
   const router = useRouter();
@@ -8,16 +9,10 @@ export default function AddTransactionModal() {
   };
 
   return (
-    <View className="absolute bottom-10 right-10 flex w-16 h-16 z-50">
-      <View>
-        <TouchableOpacity
-          className="w-16 h-16 rounded-full bg-primary items-center justify-center"
-          activeOpacity={0.8}
-          onPress={handleAddBill}
-        >
-          <Text className="text-4xl text-white">+</Text>
-        </TouchableOpacity>
-      </View>
+    <View className="absolute bottom-10 right-10 flex size-16 z-50">
+      <Button className={ "size-16 rounded-full bg-primary items-center justify-center" } onPress={ handleAddBill }>
+        <Text className="text-4xl text-white">+</Text>
+      </Button>
     </View>
   );
 }

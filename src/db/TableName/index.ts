@@ -6,5 +6,10 @@ export const tableTransaction = "transaction"
 export const tableCategory = "category"
 //设置
 export const tableSetting = "setting"
-
+// 资产表
+export const tableAssets = "assets"
+// 账本表
+export const tableAccount = "account"
+// 分期表
+export const tablePeriod = "period"
 // 用户？

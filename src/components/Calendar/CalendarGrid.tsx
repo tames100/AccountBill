@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
-import { useDate } from "@/hooks";
 import CalendarGridItem from "@/components/Calendar/CalendarGridItem";
 import { CalendarCellWidth, weekDaysOfFristRi } from "@/constants/calendar";
+import { useDate } from "@/hooks";
 import { DayData } from "@/types/calendar";
-import { useMemo, useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import { Text, View } from "react-native";
 
 interface CalendarGridProps {
   currentDate: Date;
@@ -93,52 +93,56 @@ export default function CalendarGrid(props: CalendarGridProps) {
   );
 
   // 渲染日期行
-  const renderWeekRow = (week: (DayData | null)[], rowIdx: number) => (
-    <View key={rowIdx}>
-      {week.map((day, colIdx) => {
-        if (!day) {
-          return <View key={colIdx} />;
-        }
+  const renderWeekRow = (week: DayData[], rowIdx: number) => week.map((day, colIdx) => {
+    // 空白天
+    if (!day) {
+      return <View key={ colIdx }/>;
+    }
 
-        const { income, expense } = getDayTransactions(day.date);
-        const selected = isSelected(day.date);
+    // 获取当日的收入和支出
+    const { income, expense } = getDayTransactions(day.date);
+    // 是否选中当日
+    const selected = isSelected(day.date);
 
-        return (
-          <CalendarGridItem
-            key={colIdx}
-            day={day}
-            index={colIdx}
-            income={income}
-            expenses={expense}
-            isSelected={selected}
-            onPress={() => onDateSelect(new Date(year, month, day.date))}
-          />
-        );
-      })}
-    </View>
-  );
+    return (
+      <View key={ colIdx } className={ "flex-1 size-16" }>
+        <CalendarGridItem
+          key={colIdx}
+          day={ day }
+          index={ colIdx }
+          income={ income }
+          expenses={ expense }
+          isSelected={ selected }
+          onPress={ () => onDateSelect(new Date(year, month, day.date)) }
+        />
+       </View>
+    );
+  })
+
 
   return (
     <View>
-      {/* 日历头部 */}
+      {/* 日历头部 */ }
       <View className="pt-4 pb-2">
         <View
-          className={`flex-row w-[${CalendarCellWidth * 7}px] justify-around gap-2 mb-2`}
+          className={ `flex-row w-[${ CalendarCellWidth * 7 }px] justify-around gap-2 mb-2` }
         >
-          {weekDaysOfFristRi.map((day) => (
-            <Text key={day} className="text-sm text-mutedText">
-              {day}
+          { weekDaysOfFristRi.map((day) => (
+            <Text key={ day } className="text-sm text-mutedText">
+              { day }
             </Text>
-          ))}
+          )) }
         </View>
       </View>
 
-      {/* 日历网格 */}
-      {isCollapsed
+      {/* 日历网格 */ }
+      {
+        isCollapsed
         ? // 折叠模式：只显示选中日期所在的一周
-          renderWeekRow(selectedWeekData, -1)
+        renderWeekRow(selectedWeekData, -1)
         : // 展开模式：显示整月
-          calendarGrid.map((week, rowIdx) => renderWeekRow(week, rowIdx))}
+        calendarGrid.map((week, rowIdx) => renderWeekRow(week, rowIdx))
+      }
     </View>
   );
 }
