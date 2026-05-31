@@ -1,7 +1,7 @@
 export const databaseName: string = 'bill.db'
 
 // 账单
-export const tableTransaction = "transaction"
+export const tableTransaction = "transactions"
 //分类
 export const tableCategory = "category"
 //设置

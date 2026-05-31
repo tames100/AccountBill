@@ -1,6 +1,8 @@
 // db/sql/createTables.ts
+import { tableTransaction } from "@/db/TableName";
+
 export const createTransactionsTable = `
-  CREATE TABLE IF NOT EXISTS transactions (
+  CREATE TABLE IF NOT EXISTS ${tableTransaction} (
     id TEXT PRIMARY KEY,
     amount REAL NOT NULL,
     type TEXT NOT NULL CHECK(type IN ('income','expense','transfer')),

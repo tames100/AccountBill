@@ -46,3 +46,5 @@ app-example
 
 .trae/
 .expo/
+.agents/
+.codewhale/
